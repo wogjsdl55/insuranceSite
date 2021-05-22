@@ -14,7 +14,7 @@ var app = express();
 mongoose.connect('mongodb+srv://shwogjs00:카카오2022@cluster0.jj6f0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
   useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(() => console.log('MongoDB connected...'))
-.catch(error => console.log(error))
+.catch(error => console.log(error)) 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
