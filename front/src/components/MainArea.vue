@@ -4,20 +4,28 @@
         <topArea/>
       </b-row>
           <b-carousel
-            id="carousel-1"
             v-model="slide"
-            :interval="100000"
+            :interval="10000"    
+            
             indicators
-            background="#ababab"
-            img-width="1024"
-            img-height="500"
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
+            img-width="1024"
+          img-height="480"
+            style="text-shadow: 1px 1px 2px #333;"
           >
             <!-- Slides with image only -->
-            <b-carousel-slide img-src="/static/img/main_img.png"></b-carousel-slide>
-            <b-carousel-slide img-src="/static/img/main_img2.png"></b-carousel-slide>
-            <b-carousel-slide img-src="/static/img/main_img.png"></b-carousel-slide>
+            <b-carousel-slide
+        caption="First slide"
+        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
+        img-src="https://picsum.photos/1024/480/?image=52"
+      ></b-carousel-slide>
+
+      <!-- Slides with custom text -->
+      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+        <h1>Hello world!</h1>
+      </b-carousel-slide>
+
           </b-carousel>
  
         <b-row>

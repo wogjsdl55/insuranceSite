@@ -2,8 +2,8 @@
   <b-container>
     <b-navbar toggleable="sm" type="light">
 
-      <b-nav href="#" > <img src="@/assets/logo.png" alt="logo"  style="width:50px"> </b-nav>
-
+      <b-nav href="#" > <b-img :src="require('../assets/main/main_logo.jpg')" alt="Left image" width="250" /> </b-nav>
+      
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
@@ -26,6 +26,7 @@
 <script>
 export default {
   name: 'top_area'
+  
 }
 </script>
 
