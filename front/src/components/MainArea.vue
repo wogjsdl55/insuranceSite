@@ -15,20 +15,28 @@
             @sliding-end="onSlideEnd"
           >
             <!-- Slides with image only -->
-            <b-carousel-slide img-src="/static/img/main_img.5e72a57.png"></b-carousel-slide>
-            <b-carousel-slide img-src="/static/img/main_img2.5a5ad45.png"></b-carousel-slide>
-            <b-carousel-slide img-src="/static/img/main_img.5e72a57.png"></b-carousel-slide>
+            <b-carousel-slide img-src="/static/img/main_img.png"></b-carousel-slide>
+            <b-carousel-slide img-src="/static/img/main_img2.png"></b-carousel-slide>
+            <b-carousel-slide img-src="/static/img/main_img.png"></b-carousel-slide>
           </b-carousel>
  
-        <b-row class="main_button">
-          <b-col>
-              <b-button variant="info">Info</b-button>
-          </b-col>
-          <b-col>
-              <b-button variant="info">카카오톡</b-button>
-          </b-col>
-          <b-col>3 of 3</b-col>
+        <b-row>
+          <b-card-group>
+            <b-card img-top>
+                <b-button disabled size="lg">Also Disabled</b-button>
+            </b-card>
+
+            <b-card img-top>
+                <b-button disabled size="lg">Also Disabled</b-button>
+            </b-card>
+
+            <b-card img-top>
+                <b-button disabled size="lg">Also Disabled</b-button>
+            </b-card>
+        </b-card-group>
         </b-row>
+        
+    
 
    
         <b-row>
