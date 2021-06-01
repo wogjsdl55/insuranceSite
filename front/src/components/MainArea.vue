@@ -6,12 +6,11 @@
           <b-carousel
             v-model="slide"
             :interval="10000"    
-            
             indicators
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
             img-width="1024"
-          img-height="480"
+          img-height="500"
             style="text-shadow: 1px 1px 2px #333;"
           >
             <!-- Slides with image only -->
@@ -30,16 +29,21 @@
  
         <b-row>
           <b-card-group>
-            <b-card img-top>
-                <b-button disabled size="lg">Also Disabled</b-button>
+            <b-card>
+                 <b-col><b-button  variant="info" size="sm" style="width:100%; height: 100%;"><b>상담문의 하기</b></b-button></b-col>
             </b-card>
 
-            <b-card img-top>
-                <b-button disabled size="lg">Also Disabled</b-button>
-            </b-card>
+           <b-card>
+             <b-card>
+                 <b-col><b-button  variant="info" size="sm" style="width:100%; height: 100%;"><b>상담문의 하기</b></b-button></b-col>
+             </b-card>
+              <b-card>
+                 <b-col><b-button  variant="info" size="sm" style="width:100%; height: 100%;"><b>상담문의 하기</b></b-button></b-col>
+              </b-card>
+          </b-card>
 
             <b-card img-top>
-                <b-button disabled size="lg">Also Disabled</b-button>
+                <b-col><b-button  variant="info" size="sm" style="width:100%; height: 100%;"><b>상담문의 하기</b></b-button></b-col>
             </b-card>
         </b-card-group>
         </b-row>
@@ -107,6 +111,20 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
+}
+.card {
+  border: 0;
+}
+@media (max-width: 576px) {
+  .card-body {
+    padding: 0;
+  }
+}
+.col {
+  height: 100%;
+}
+.btn-info{
+  background-color: rgb(13 110 253 / 25%);
 }
 a {
   color: #42b983;
