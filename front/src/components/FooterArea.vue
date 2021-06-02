@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container style="padding: 1rem;">
     <hr style="height: 5px; color: #0d6efd;"/>
 
     <hr style="height: 5px; color: #42b983; margin: auto;"/>  

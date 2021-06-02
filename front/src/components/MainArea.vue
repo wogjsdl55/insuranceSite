@@ -3,6 +3,7 @@
       <b-row id="top">
         <topArea/>
       </b-row>
+      <b-row>
           <b-carousel
             v-model="slide"
             :interval="10000"    
@@ -20,14 +21,14 @@
         img-src="https://picsum.photos/1024/480/?image=52"
       ></b-carousel-slide>
 
-      <!-- Slides with custom text -->
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-        <h1>Hello world!</h1>
-      </b-carousel-slide>
+        <!-- Slides with custom text -->
+        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+          <h1>Hello world!</h1>
+        </b-carousel-slide>
 
-          </b-carousel>
+        </b-carousel>
  
-        <b-row>
+
           <b-card-group>
             <b-card>
                  <b-col><b-button  variant="info" size="sm" style="width:100%; height: 100%;"><b>상담문의 하기</b></b-button></b-col>
@@ -46,21 +47,38 @@
                 <b-col><b-button  variant="info" size="sm" style="width:100%; height: 100%;"><b>상담문의 하기</b></b-button></b-col>
             </b-card>
         </b-card-group>
-        </b-row>
-        
-    
 
-   
-        <b-row>
+        <b-card>
           <b-table 
             :items="items" 
             :fields="fields"
+            outlined
+            hover
+            noCollapse
+            :per-page="perPage"
+            :current-page="currentPage"
           >
           </b-table>
-        </b-row>
-      <div id="footer">
+
+        </b-card>
+
+        <b-pagination
+            v-model="currentPage"
+            :total-rows="rows"
+            :per-page="perPage"
+            aria-controls="my-table"
+            align="center"
+            size="sm"
+          ></b-pagination>
+
+        <b-col>
+            <b-button size="sm" variant="info">글쓰기</b-button>
+          </b-col>
+      </b-row>
+
+      <b-row id="footer">
         <footerArea/>
-      </div>
+      </b-row>
     </b-container>
 </template>
 
@@ -78,8 +96,22 @@ export default {
     return {
       slide: 0,
       sliding: null,
+      currentPage: 1,
+      perPage: 5,
       fields: ['NO', '제목', '작성자', '작성시간', '상담상태'],
       items: [
+          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담신청" },
+          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담신청" },
+          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담중" },
+          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : "상담완료" },
+          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담신청" },
+          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담신청" },
+          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담중" },
+          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : "상담완료" },
+          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담신청" },
+          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담신청" },
+          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담중" },
+          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : "상담완료" },
           { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담신청" },
           { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담신청" },
           { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담중" },
@@ -96,6 +128,11 @@ export default {
       this.sliding = false
     }
   },
+  computed: {
+      rows() {
+        return this.items.length
+      }
+    }
 }
 </script>
 
@@ -115,10 +152,9 @@ li {
 .card {
   border: 0;
 }
-@media (max-width: 576px) {
-  .card-body {
-    padding: 0;
-  }
+
+.card-body {
+  padding: 1rem 0.5rem;
 }
 .col {
   height: 100%;
@@ -130,4 +166,15 @@ a {
   color: #42b983;
 }
 
+.pagination {
+  float:right;
+}
+.btn-info{
+  float:right;
+}
+@media (max-width: 576px) {
+  .card-body {
+    padding: 0;
+  }
+}
 </style>
