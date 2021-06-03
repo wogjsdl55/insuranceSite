@@ -71,8 +71,8 @@
             size="sm"
           ></b-pagination>
 
-        <b-col>
-            <b-button size="sm" variant="info">글쓰기</b-button>
+          <b-col>
+            <b-button to="/board" size="sm" variant="info">글쓰기</b-button>
           </b-col>
       </b-row>
 

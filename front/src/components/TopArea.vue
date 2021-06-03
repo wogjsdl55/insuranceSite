@@ -2,7 +2,7 @@
   <b-container>
     <b-navbar toggleable="sm" type="light">
 
-      <b-nav href="#" > <b-img :src="require('../assets/main/main_logo.jpg')" alt="Left image" width="250" /> </b-nav>
+      <a href="/test" ><b-img :src="require('../assets/main/main_logo.jpg')" alt="Left image"  width="250" /> </a>
       
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
