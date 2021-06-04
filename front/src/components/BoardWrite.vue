@@ -4,42 +4,59 @@
         <topArea/>
       </b-row>
       <b-row>
-          <b-form inline>
           <b-container class="bv-example-row">
-            <b-row>
-                <b-col>
-                    <b-form-input 
-                         v-model="userName"
-                        id="inline-form-input-name"
-                        :state="validationName"
-                        class="mb-2 mr-sm-8 mb-sm-0"
-                        placeholder="이름"
-                        size="lg"
-                    ></b-form-input>
-                    <b-form-invalid-feedback :state="validationName">
-                       이름을 제대로 작성해주시기 바랍니다.
-                    </b-form-invalid-feedback>
-                </b-col>
+            <b-form inline>
+              <b-row>
+                  <b-col>
+                      <b-form-input 
+                          v-model="userName"
+                          id="inline-form-input-name"
+                          :state="validationName"
+                          class="mb-2 mr-sm-8 mb-sm-0"
+                          placeholder="이름"
+                          size="lg"
+                      ></b-form-input>
+                      <b-form-invalid-feedback :state="validationName">
+                        이름을 제대로 작성해주시기 바랍니다.
+                      </b-form-invalid-feedback>
+                  </b-col>
 
-                <b-col>
-                     <b-form-input 
-                         v-model="userBrith"
-                        id="inline-form-input-name"
-                        :state="validationBrith"
-                        class="mb-2 mr-sm-8 mb-sm-0"
-                        placeholder="생년월일 예) 1990101"
+                  <b-col>
+                      <b-form-input 
+                          v-model="userBrith"
+                          id="inline-form-input-name"
+                          :state="validationBrith"
+                          class="mb-2 mr-sm-8 mb-sm-0"
+                          placeholder="생년월일 예) 1990101"
+                          size="lg"
+                      ></b-form-input>
+                      <b-form-invalid-feedback :state="validationBrith">
+                          생년월일을 작성해주시기 바랍니다.
+                      </b-form-invalid-feedback>
+                  </b-col>
+                  <div class="w-100"></div>
+
+                  <b-col sm="6">
+                     <b-form-group v-slot="{ ariaDescribedby }" >
+                      <b-form-radio-group
+                        id="btn-radios-1"
+                        v-model="gender"
+                        :options="options"
+                        :aria-describedby="ariaDescribedby"
+                        button-variant="outline-primary"
                         size="lg"
-                    ></b-form-input>
-                    <b-form-invalid-feedback :state="validationBrith">
-                        생년월일을 작성해주시기 바랍니다.
-                    </b-form-invalid-feedback>
+                        name="radios-btn-default"
+                        buttons
+                      ></b-form-radio-group>
+                     </b-form-group>
                 </b-col>
-                <div class="w-100"></div>
-                <b-col>Column</b-col>
-                <b-col>Column</b-col>
-            </b-row>
+                  <b-col sm="2">col</b-col>
+                  <b-col sm="2">col</b-col>
+                  <b-col sm="2">col</b-col>
+
+              </b-row>
+            </b-form>
             </b-container>
-          </b-form>
       </b-row>
 
       <b-row id="footer">
@@ -59,10 +76,21 @@ export default {
     'footerArea': footerArea
   },
     data() {
-    return {
-      userName: '',
-      userbirth: '',
-    }
+      return {
+        userName: '',
+        userBrith: '',
+        gender: 'M',
+        options: [
+            { text: '남성', value: 'M' },
+            { text: '여성', value: 'W' },
+          ]
+      }
+  },
+  method: {
+     onSubmit() {
+        event.preventDefault()
+        alert(JSON.stringify(this.form))
+      }
   },
 
   computed: {
@@ -72,9 +100,10 @@ export default {
       validationName() {
         return this.userName.length > 1 && this.userName.length < 5 ? true : false
       },
-      validationBrith() {
-        return this.userBirth.length > 6 && this.userBirth.length < 8 ? true : false
-      },
+      validationBrith(){
+
+      }
+      
     }
 }
 </script>
@@ -114,6 +143,10 @@ a {
 }
 .btn-info{
   float:right;
+}
+
+.btn-lg input[type=radio]{
+    display: none;
 }
 @media (max-width: 576px) {
   .card-body {

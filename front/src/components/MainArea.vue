@@ -62,18 +62,17 @@
 
         </b-card>
 
-        <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-table"
-            align="center"
-            size="sm"
-          ></b-pagination>
-
-          <b-col>
-            <b-button to="/board" size="sm" variant="info">글쓰기</b-button>
-          </b-col>
+        <b-col>
+          <b-button to="/board" size="sm" variant="info">글쓰기</b-button>
+          <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="my-table"
+              align="center"
+              size="sm"
+            ></b-pagination>
+        </b-col>
       </b-row>
 
       <b-row id="footer">
@@ -97,7 +96,7 @@ export default {
       slide: 0,
       sliding: null,
       currentPage: 1,
-      perPage: 5,
+      perPage: 10,
       fields: ['NO', '제목', '작성자', '작성시간', '상담상태'],
       items: [
           { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담신청" },
@@ -153,6 +152,10 @@ li {
   border: 0;
 }
 
+.pagination{
+  padding-left: 10%;
+}
+
 .card-body {
   padding: 1rem 0.5rem;
 }
@@ -166,9 +169,6 @@ a {
   color: #42b983;
 }
 
-.pagination {
-  float:right;
-}
 .btn-info{
   float:right;
 }
