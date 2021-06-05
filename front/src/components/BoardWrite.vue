@@ -3,58 +3,98 @@
       <b-row id="top">
         <topArea/>
       </b-row>
+      
       <b-row>
           <b-container class="bv-example-row">
             <b-form inline>
-              <b-row>
-                  <b-col>
-                      <b-form-input 
-                          v-model="userName"
-                          id="inline-form-input-name"
-                          :state="validationName"
-                          class="mb-2 mr-sm-8 mb-sm-0"
-                          placeholder="이름"
-                          size="lg"
-                      ></b-form-input>
-                      <b-form-invalid-feedback :state="validationName">
-                        이름을 제대로 작성해주시기 바랍니다.
-                      </b-form-invalid-feedback>
+               <b-card border-variant="primary"  header="상담문의" align="left">
+                <b-row>
+                    <b-col>
+                        <b-input-group class="mb-3">
+                          <b-input-group-prepend is-text>
+                            <b-icon icon="person-fill" ></b-icon>
+                          </b-input-group-prepend>
+                          <b-form-input 
+                              v-model="userName"
+                              id="inline-form-input-name"
+                              :state="validationName"
+                              class="mb-2 mr-sm-8 mb-sm-0"
+                              placeholder="이름"
+                          >
+                          </b-form-input>
+                          <b-form-invalid-feedback :state="validationName"  style="font-size: 0.5rem;">
+                            이름을 작성해주시기 바랍니다
+                          </b-form-invalid-feedback>
+                        </b-input-group>
+                    </b-col>
+
+                    <b-col>
+                        <b-input-group class="mb-3">
+                          <b-input-group-prepend is-text>
+                            <b-icon icon="calendar-check" ></b-icon>
+                          </b-input-group-prepend>
+                          <b-form-input 
+                              v-model="userBrith"
+                              id="inline-form-input-name"
+                              :state="validationBrith"
+                              class="mb-2 mr-sm-8 mb-sm-0"
+                              placeholder="생년월일 예) 1990101"
+                          ></b-form-input>
+                          <b-form-invalid-feedback :state="validationBrith">
+                              생년월일을 작성해주시기 바랍니다.
+                          </b-form-invalid-feedback>
+                        </b-input-group>
+                    </b-col>
+                    <div class="w-100"></div>
+
+                    <b-col>
+                       <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
+                        <b-form-radio-group
+                          class="gender"
+                          v-model="gender"
+                          :options="options"
+                          :aria-describedby="ariaDescribedby"
+                          button-variant="outline-primary"
+                          name="radios-btn-default"
+                          buttons
+                        ></b-form-radio-group>
+                       </b-form-group>
                   </b-col>
-
                   <b-col>
-                      <b-form-input 
-                          v-model="userBrith"
-                          id="inline-form-input-name"
-                          :state="validationBrith"
-                          class="mb-2 mr-sm-8 mb-sm-0"
-                          placeholder="생년월일 예) 1990101"
-                          size="lg"
-                      ></b-form-input>
-                      <b-form-invalid-feedback :state="validationBrith">
-                          생년월일을 작성해주시기 바랍니다.
-                      </b-form-invalid-feedback>
+                      <b-input-group class="mb-3">
+                          <b-input-group-prepend is-text>
+                            <b-icon icon="telephone-fill" ></b-icon>
+                          </b-input-group-prepend>
+                          <b-form-input 
+                              v-model="tel"
+                              id="inline-form-input-name"
+                              :state="validationName"
+                              class="mb-2 mr-sm-8 mb-sm-0"
+                              placeholder="010-0000-0000"
+                          >
+                          </b-form-input>
+                          <b-form-invalid-feedback :state="validationName"  style="font-size: 0.5rem;">
+                            휴대폰 번호 확인바랍니다
+                          </b-form-invalid-feedback>
+                        </b-input-group>
                   </b-col>
-                  <div class="w-100"></div>
+                
+                   <b-card-text align="left" >* 이름은 게시판에 그대로 노출되지 않습니다. 예) 임동우 => 임*우</b-card-text>
+                   <b-card-text align="left" >* 생년월일은 비밀번호로 이용됩니다.</b-card-text>
+                   <b-card-text align="left" style="color: red;">* 보험상담 특직상 전화번호는 꼭 틀리지 않게 부탁드립니다.</b-card-text>
+                </b-row>
 
-                  <b-col sm="6">
-                     <b-form-group v-slot="{ ariaDescribedby }" >
-                      <b-form-radio-group
-                        id="btn-radios-1"
-                        v-model="gender"
-                        :options="options"
-                        :aria-describedby="ariaDescribedby"
-                        button-variant="outline-primary"
-                        size="lg"
-                        name="radios-btn-default"
-                        buttons
-                      ></b-form-radio-group>
-                     </b-form-group>
-                </b-col>
-                  <b-col sm="2">col</b-col>
-                  <b-col sm="2">col</b-col>
-                  <b-col sm="2">col</b-col>
+                    <b-form-input
+                      id="input-1"
+                      v-model="subject"
+                      placeholder="제목을 입력해주세요."
+                      required
+                      style="font-size: 2rem; margin-top: 30px;"
+                    ></b-form-input>
 
-              </b-row>
+
+
+              </b-card>
             </b-form>
             </b-container>
       </b-row>
@@ -69,21 +109,32 @@
 import topArea from './TopArea.vue'
 import footerArea from './FooterArea.vue'
 
+
 export default {
   name: 'App',
   components: {
     'topArea': topArea,
-    'footerArea': footerArea
+    'footerArea': footerArea,
   },
     data() {
       return {
         userName: '',
         userBrith: '',
         gender: 'M',
+        tel:'',
+        subject: '',
+        checkbox:'',
         options: [
             { text: '남성', value: 'M' },
             { text: '여성', value: 'W' },
-          ]
+        ],
+        checkOptions: [
+          { text: 'Orange', value: 'orange' },
+          { text: 'Apple', value: 'apple' },
+          { text: 'Pineapple', value: 'pineapple' },
+          { text: 'Grape', value: 'grape' }
+        ]
+
       }
   },
   method: {
@@ -102,9 +153,8 @@ export default {
       },
       validationBrith(){
 
-      }
-      
-    }
+      } 
+    },
 }
 </script>
 
@@ -145,12 +195,35 @@ a {
   float:right;
 }
 
-.btn-lg input[type=radio]{
-    display: none;
+.card-header{
+  font-size: 2rem;
+  font-weight: bold;
+  padding-right: 88%;
 }
+
+.input-group-text{
+  padding: 0.5rem 0.75rem;
+}
+.card-text{
+  font-size: 1.5rem;
+}
+.gender {
+  width: 39rem;
+  height: 2.5rem;
+}
+
 @media (max-width: 576px) {
+  .card-header{
+    padding-right: 0;
+  }
   .card-body {
-    padding: 0;
+    padding-top: 1rem;
+  }
+  .card-text{
+    font-size: 10px;
+  }
+  .btn-group-toggle{
+    width: 9.5rem;
   }
 }
 </style>
