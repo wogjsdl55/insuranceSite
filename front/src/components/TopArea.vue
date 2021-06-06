@@ -35,6 +35,7 @@ export default {
 .menu {
   font-size: 1.1vw;
   font-weight: bold;
+  font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
 }
 .navbar-collapse{
   padding-left: 25rem;
