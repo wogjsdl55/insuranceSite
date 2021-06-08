@@ -72,7 +72,6 @@
             noCollapse
             :per-page="perPage"
             :current-page="currentPage"
-            :tbody-td-class="status"
           >
             <template #table-colgroup="scope">
               <col
@@ -85,10 +84,12 @@
             <template #cell(제목)="data">
               <b class="text-left" style="float:left">{{ data.value }}</b>
             </template>
-            <template #cell(상담상태)="data">
-              <b-button v-if="data.상담상태">
-              </b-button>
-              <b-button :class="status">{{ data.value }}</b-button>
+
+            <template v-slot:cell(상담상태)="data">
+
+               <b-button v-if="data.item.상담상태 ==='상담신청'"  variant="danger" > {{ data.value }} </b-button>
+               <b-button v-if="data.item.상담상태 ==='상담중'"  variant="warning"> {{ data.value }} </b-button>
+               <b-button v-if="data.item.상담상태 ==='상담완료'"  > {{ data.value }} </b-button>
           </template>
           </b-table>
         </b-card>
@@ -131,22 +132,22 @@ export default {
       perPage: 10,
       fields: ['NO', '제목' , '작성자', '작성시간', '상담상태'],
       items: [
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담신청", status: 'register' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담신청", status: 'register' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담신청", status: 'register' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : "상담신청", status: 'register' },
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담신청", status: 'register' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담신청", status: 'register' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담완료", status: 'complete' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : "상담완료", status: 'complete' },
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담중", status: 'ongoing' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담중", status: 'ongoing' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담중", status: 'ongoing' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : "상담중", status: 'ongoing' },
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : "상담중", status: 'ongoing' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : "상담완료", status: 'complete' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : "상담완료", status: 'complete' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : "상담완료", status: 'complete' }
+          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담신청' },
+          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담중' },
+          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담신청' },
+          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
+          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담중' },
+          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담신청' },
+          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
+          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
+          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담중' },
+          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담중' },
+          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담중' },
+          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담중' },
+          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담중' },
+          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담완료' },
+          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
+          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담완료' }
         ]
     }
   },
@@ -199,6 +200,8 @@ a { color: #42b983; }
 .button_q { font-size: 2.5rem; }
 .success_btn { width:100%; height: 5rem; }
 .status{ font-size: 1rem;}
+.btn-danger{ border-radius: 20px / 25px; color: white; }
+.btn-warning{ border-radius: 20px / 25px; color: white; }
 
 @media (max-width: 576px) {
   table { font-size:0.5rem; }
@@ -213,6 +216,9 @@ a { color: #42b983; }
   .main_tel3{ display: inline; font-size:1.5rem;}
   .kakao{ height: 4rem; width: 22rem; }
   .status{ font-size: 0.5rem;}
+  .btn-secondary{ font-size: 0.5rem; }
+  .btn-danger{ font-size: 0.5rem; }
+  .btn-warning{ font-size: 0.5rem; }
 }
 </style>
 
