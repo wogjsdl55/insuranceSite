@@ -62,7 +62,7 @@
             </b-card>
         </b-card-group>
 
-        <h2 style="font-weight:bold">상담문의 게시판</h2>
+        <h2 style="font-weight:bold; padding-top: 3rem;">상담문의 게시판</h2>
         <b-card>
           <b-table 
             :items="items" 
@@ -82,7 +82,7 @@
               >
             </template>
             <template #cell(제목)="data">
-              <b class="text-left" style="float:left">{{ data.value }}</b>
+              <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
             </template>
 
             <template v-slot:cell(상담상태)="data">
@@ -95,7 +95,7 @@
         </b-card>
 
         <b-col>
-          <b-button to="/board" size="sm" style="color: white; font-weight: bold;" variant="info">글쓰기</b-button>
+          <b-button to="/board" size="sm" style="color: white; font-weight: bold;  width: 5rem;     margin-top: 0%;" variant="info">글쓰기</b-button>
           <b-pagination
               v-model="currentPage"
               :total-rows="rows"
@@ -132,7 +132,7 @@ export default {
       perPage: 10,
       fields: ['NO', '제목' , '작성자', '작성시간', '상담상태'],
       items: [
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담신청' },
+          { NO: 10, 제목 : '<span style="color:red;"><공지></span>제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담신청' },
           { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담중' },
           { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담신청' },
           { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
@@ -180,7 +180,6 @@ li { display: inline-block; margin: 0 10px; }
 a { color: #42b983; }
 
 .card { border: 0; }
-
 .pagination{ padding-left: 10%;}
  
 .card-body { padding: 1rem 0.5rem; }

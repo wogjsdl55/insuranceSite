@@ -32,28 +32,14 @@ export default {
 </script>
 
 <style>
-.menu {
-  font-size: 1.1vw;
-  font-weight: bold;
-  font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
-}
-.navbar-collapse{
-  padding-left: 25rem;
-  padding-top: 9.5rem;
-}
-.main_img{
-  padding-top: 2.5rem;
-}
+.menu { font-size: 1.1vw; font-weight: bold; font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif; }
+.navbar-collapse{ padding-left: 25rem; padding-top: 9.5rem; }
+.main_img{ padding-top: 2.5rem; }
+.navbar-light .navbar-nav .nav-link:hover{  color: #0dcaf0; }
 
 @media (max-width: 576px) {
-.navbar-collapse{ 
-  padding-left: 0;
-  padding-top: 0rem;
-  }
-  .main_img{
-    padding-top: 0;
-    width: 200px;
-  }
+.navbar-collapse{  padding-left: 0; padding-top: 0rem; }
+.main_img{ padding-top: 0; width: 200px; }
 }
  
 </style>
