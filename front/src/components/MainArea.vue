@@ -72,6 +72,7 @@
             noCollapse
             :per-page="perPage"
             :current-page="currentPage"
+            @row-clicked="clickEvent"
           >
             <template #table-colgroup="scope">
               <col
@@ -162,7 +163,12 @@ export default {
     status(item, type) {
         if (!item || type !== 'row') return
         if (item.status === 'register') return 'table-success'
-      }
+    },
+    clickEvent(item){
+      console.log(item);
+      this.$emit('row-clicked', item);
+    }
+
   },
   computed: {
       rows() {

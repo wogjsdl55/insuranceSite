@@ -3,7 +3,7 @@
     <div>
     <b-navbar toggleable="sm" type="light">
 
-      <a href="/test" ><b-img class="main_img" :src="require('../assets/main/main_logo.jpg')" alt="Left image"  width="350" /> </a>
+      <a href="/" ><b-img class="main_img" :src="require('../assets/main/main_logo.jpg')" alt="Left image"  width="350" /> </a>
       
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -26,13 +26,14 @@
  
 <script>
 export default {
-  name: 'top_area'
+  name: 'top_area',
+  metaInfo: { title: 'bohumcare' },
   
 }
 </script>
 
 <style>
-.menu { font-size: 1.1vw; font-weight: bold; font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif; }
+.menu { font-size: 1.3rem; font-weight: bold; font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif; }
 .navbar-collapse{ padding-left: 25rem; padding-top: 9.5rem; }
 .main_img{ padding-top: 2.5rem; }
 .navbar-light .navbar-nav .nav-link:hover{  color: #0dcaf0; }
@@ -40,6 +41,7 @@ export default {
 @media (max-width: 576px) {
 .navbar-collapse{  padding-left: 0; padding-top: 0rem; }
 .main_img{ padding-top: 0; width: 200px; }
+.menu   { font-size: 1rem; }
 }
  
 </style>
