@@ -10,7 +10,7 @@ var usersRouter = require('./routes');
 
 // 카페 24 웹 호스트 포트 설정 
 var app = express();
-const PORT = 8001
+const PORT = 8002
 app.listen(PORT, () => {
   console.log(`server started on PORT ${PORT}`)
 })
