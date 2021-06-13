@@ -79,18 +79,17 @@
                 v-for="field in scope.fields"
                 :key="field.key"
                 class="subject"
-                :style="{ width: field.key === '제목' ? '500px' : '100px' }"
+                :style="{ width: field.key === 'subject' ? '500px' : '100px' }"
               >
             </template>
-            <template #cell(제목)="data">
-              <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
+            <template v-slot:cell(subject)="data">
+              <span v-html ="data.value" style="float:left;">{{ data.value.format('MM/DD/YYYY') }}</span>
             </template>
 
-            <template v-slot:cell(상담상태)="data">
-
-               <b-button v-if="data.item.상담상태 ==='상담신청'"  variant="danger" > {{ data.value }} </b-button>
-               <b-button v-if="data.item.상담상태 ==='상담중'"  variant="warning"> {{ data.value }} </b-button>
-               <b-button v-if="data.item.상담상태 ==='상담완료'"  > {{ data.value }} </b-button>
+            <template v-slot:cell(counselStatus)="data">
+               <b-button v-if="data.item.counselStatus ==='0'"  variant="danger" > 상담중 </b-button>
+               <b-button v-if="data.item.counselStatus ==='1'"  variant="warning"> 상담신청 </b-button>
+               <b-button v-if="data.item.counselStatus ==='2'"  > 상담완료 </b-button>
           </template>
           </b-table>
         </b-card>
@@ -125,35 +124,36 @@ export default {
     'topArea': topArea,
     'footerArea': footerArea,
   },
-    data() {
+  mounted() { 
+    //페이지 시작하면은 자동 함수 실행
+		this.dataList();
+	},
+  data() {
     return {
       slide: 0,
       sliding: null,
       currentPage: 1,
       perPage: 10,
-      fields: ['NO', '제목' , '작성자', '작성시간', '상담상태'],
-      items: [
-          { NO: 10, 제목 : '<span style="color:red;"><공지></span>제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담신청' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담중' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담신청' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담중' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담신청' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담중' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담중' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담중' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담중' },
-          { NO: 10, 제목 : '제목 테스트입니다.', 작성자: 'Macdonald', 작성시간 : '2020-05-31', 상담상태 : '상담중' },
-          { NO: 9,  제목 : '제목 테스트입니다.', 작성자: 'Shaw',      작성시간 : '2020-05-31', 상담상태 : '상담완료' },
-          { NO: 8,  제목 : '제목 테스트입니다.', 작성자: 'Wilson',    작성시간 : '2020-05-31', 상담상태 : '상담완료' },
-          { NO: 7,  제목 : '제목 테스트입니다.', 작성자: 'Carney',    작성시간 : '2020-05-31', 상담상태 : '상담완료' }
-        ]
+      seq: '',
+      subject: '',
+      userName: '',
+      regdate: '',
+      counselStatus: '',
+      fields: [ { key: 'seq', label: '번호'}, { key: 'subject', label: '제목'} , { key: 'userName', label: '작성자'}, { key: 'regdate', label: '작성일'}, { key: 'counselStatus', label: '상당상태'} ],
+      items: [],
     }
   },
 
   methods: {
+    dataList(){
+      this.$http.get("/api/boardList") 
+        .then(res => {         
+          this.items = res.data;
+        })
+        .catch(function (error) {
+          alert(error);
+        })
+    },
     onSlideStart(slide) {
       this.sliding = true
     },
@@ -165,8 +165,7 @@ export default {
         if (item.status === 'register') return 'table-success'
     },
     clickEvent(item){
-      console.log(item);
-      this.$emit('row-clicked', item);
+      this.$http.post('/boardDetail', item);
     }
 
   },

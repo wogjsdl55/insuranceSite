@@ -4,9 +4,11 @@ import MainArea from '@/components/MainArea'
 import BoardWrite from '@/components/BoardWrite'
 import BoardDetail from '@/components/BoardDetail'
 import VueMeta from 'vue-meta'
+import axios from 'axios'
 
 Vue.use(VueMeta)
 Vue.use(Router)
+Vue.prototype.$http=axios;
 
 export default new Router({
   mode: 'history',
@@ -17,12 +19,12 @@ export default new Router({
       component: MainArea,
     },
     {
-        path: '/board',
+        path: '/board:id?',
         name: 'BoardWrite',
         component: BoardWrite
     },
     {
-      path: '/BoardDetail',
+      path: '/boardDetail',
       name: 'BoardDetail',
       component: BoardDetail
   }

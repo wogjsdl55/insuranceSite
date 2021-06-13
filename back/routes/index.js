@@ -6,8 +6,9 @@ var path = require('path');
 router.get('/', function(req, res, next) {
 
   res.sendfile(path.join(__dirname, '../public/index.html'));
-  //res.render('index', { title: 'Express' });
+  res.render('index', { title: 'bohumcare' });
 
 });
+
 
 module.exports = router;

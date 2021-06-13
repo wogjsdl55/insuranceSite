@@ -6,7 +6,7 @@
       
       <b-row>
           <b-container class="bv-example-row">
-            <b-form inline>
+            <b-form inline  @submit="onSubmit" method="post">
                <b-card border-variant="primary"  header="상담문의" align="left">
                 <b-row>
                     <b-col>
@@ -15,11 +15,12 @@
                             <b-icon icon="person-fill" ></b-icon>
                           </b-input-group-prepend>
                           <b-form-input 
-                              v-model="userName"
+                              v-model="form.userName"
                               id="inline-form-input-name"
                               :state="validationName"
                               class="mb-2 mr-sm-8 mb-sm-0"
                               placeholder="이름"
+                              required
                           >
                           </b-form-input>
                           <b-form-invalid-feedback :state="validationName" class="message">
@@ -31,18 +32,14 @@
                     <b-col>
                         <b-input-group class="mb-3">
                           <b-input-group-prepend is-text>
-                            <b-icon icon="calendar-check" ></b-icon>
+                            <b-icon icon="key-fill" ></b-icon>
                           </b-input-group-prepend>
                           <b-form-input 
-                              v-model="userBrith"
-                              id="inline-form-input-name"
-                              :state="validationBrith"
-                              class="mb-2 mr-sm-8 mb-sm-0"
-                              placeholder="생년월일 예) 1990101"
-                          ></b-form-input>
-                          <b-form-invalid-feedback :state="validationBrith" class="message">
-                              생년월일을 작성해주시기 바랍니다.
-                          </b-form-invalid-feedback>
+                              v-model="form.userPwd"
+                              type="password"
+                              required
+                              placeholder="작성글 비밀번호를 입력바랍니다.">
+                          </b-form-input>
                         </b-input-group>
                     </b-col>
                     <div class="w-100"></div>
@@ -51,8 +48,9 @@
                        <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
                         <b-form-radio-group
                           class="gender"
-                          v-model="gender"
-                          :options="options"
+                          v-model="form.gender"
+                          :options="genders"
+                          required
                           :aria-describedby="ariaDescribedby"
                           button-variant="outline-primary"
                           name="radios-btn-default"
@@ -60,17 +58,37 @@
                         ></b-form-radio-group>
                        </b-form-group>
                   </b-col>
+
+                  <b-col>
+                      <b-input-group class="mb-3">
+                          <b-input-group-prepend is-text>
+                            <b-icon icon="calendar-check" ></b-icon>
+                          </b-input-group-prepend>
+                          <b-form-input 
+                              v-model="form.userBrith"
+                              id="inline-form-input-name"
+                              :state="validationBrith"
+                              class="mb-2 mr-sm-8 mb-sm-0"
+                              placeholder="생년월일 예) 1990101"
+                              required
+                          ></b-form-input>
+                          <b-form-invalid-feedback :state="validationBrith" class="message">
+                              생년월일을 작성해주시기 바랍니다.
+                          </b-form-invalid-feedback>
+                        </b-input-group>
+                  </b-col>
                   <b-col>
                       <b-input-group class="mb-3">
                           <b-input-group-prepend is-text>
                             <b-icon icon="telephone-fill" ></b-icon>
                           </b-input-group-prepend>
                           <b-form-input 
-                              v-model="userTel"
+                              v-model="form.userTel"
                               id="inline-form-input-name"
                               :state="validationTel"
                               class="mb-2 mr-sm-8 mb-sm-0"
                               placeholder="010-0000-0000"
+                              required
                           >
                           </b-form-input>
                           <b-form-invalid-feedback :state="validationTel" class="message">
@@ -80,13 +98,12 @@
                   </b-col>
                 
                    <b-card-text align="left" >* 이름은 게시판에 그대로 노출되지 않습니다. 예) 임동우 => 임*우</b-card-text>
-                   <b-card-text align="left" >* 생년월일은 비밀번호로 이용됩니다.</b-card-text>
                    <b-card-text align="left" style="color: red;">* 보험상담 특직상 전화번호는 꼭 틀리지 않게 부탁드립니다.</b-card-text>
                 </b-row>
 
                       <b-form-input
                         id="input-1"
-                        v-model="subject"
+                        v-model="form.subject"
                         placeholder="제목을 입력해주세요."
                         required
                         class="subject"
@@ -96,7 +113,7 @@
                   <b-form-group v-slot="{ ariaDescribedby }">
                     <b-form-checkbox-group
                       id="checkbox-group-1"
-                      v-model="checkbox"
+                      v-model="form.checkOption"
                       :options="checkOptions"
                       :aria-describedby="ariaDescribedby"
                       name="flavour-1"
@@ -105,45 +122,19 @@
                   </b-form-group>
                </b-card>
 
-            </b-form>
-            </b-container>
-      </b-row>
+        <b-row>
+          <vue-editor v-model="form.content" :editor-toolbar="customToolbar"  />
+        </b-row>
 
-      <b-row>
-        <vue-editor v-model="content" :editor-toolbar="customToolbar"  />
+        <b-row>
+          <b-col>
+            <b-button class="confirm" type="submit" size="lg" variant="primary" >등록</b-button>
+            <b-button class="confirm" to="/" size="lg" variant="secondary">취소</b-button>
+          </b-col>
+        </b-row>
+        </b-form>
+        </b-container>
       </b-row>
-
-  
-      <b-row>  
-          <b-input-group>
-            <b-input-group-prepend is-text>
-              <b-icon icon="telephone-fill" ></b-icon>
-            </b-input-group-prepend>
-            <b-form-input 
-                v-model="userTel"
-                :state="validationTel"
-                placeholder="010-0000-0000"
-                style="width:50px;"
-            >
-            </b-form-input>
-            <b-form-invalid-feedback :state="validationTel" class="message">
-              휴대폰 번호 확인바랍니다
-            </b-form-invalid-feedback>
-          </b-input-group>
-      </b-row>
-      <b-row>
-        <b-col>
-          <b-button class="confirm" to="/board" size="lg" variant="primary" v-b-modal.modal>등록</b-button>
-          <b-button class="confirm" to="/board" size="lg" variant="secondary">취소</b-button>
-
-          <b-modal id="modal" modal-title="no" centered  ok-only okTitle="확인"> 
-            <p class="my-4"  style="text-align: center;">
-              상담신청이 완료되었습니다.
-            </p>
-          </b-modal>
-        </b-col>
-      </b-row>
-
       <b-row id="footer">
         <footerArea/>
       </b-row>
@@ -164,20 +155,24 @@ export default {
   },
     data() {
       return {
-        userName: '',
-        userBrith: '',
-        gender: 'M',
-        userTel:'',
-        subject: '',
-        checkbox:[],
-        content: "",
+        form: {
+          userName: '',
+          userPwd: '',
+          userBrith: '',
+          gender: 'M',
+          userTel:'',
+          subject: '',
+          checkbox:[],
+          content: "",
+          checkOption: [],
+        },
         customToolbar: [
           ["bold", "italic", "underline"],
           [{ list: "ordered" }, { list: "bullet" },],
           [{ align: "" }, { align: "center" }, { align: "right" }, { align: "justify" } ],
           ["image"],[{color: [] }]
         ],
-        options: [
+        genders: [
             { text: '남성', value: 'M' },
             { text: '여성', value: 'W' },
         ],
@@ -193,22 +188,29 @@ export default {
   methods: {
      onSubmit() {
         event.preventDefault()
-        alert(JSON.stringify(this.form))
+        this.$http.post("/api/boardSubmit", this.form) 
+        .then(res => {         
+          alert('상담신청이 완료되었습니다.');
+          this.$router.push('/');
+        })
+        .catch(function (error) {
+          alert(error);
+        })
       }
   },
 
   computed: {
       rows() {
-        return this.items.length
+        return this.items.form.length
       },
       validationName() {
-        return this.userName.length > 1 && this.userName.length < 5 ? true : false
+        return this.form.userName.length > 1 && this.form.userName.length < 10 ? true : false
       },
       validationBrith(){
-        return this.userBrith.length > 6 && this.userBrith.length < 8 ? true : false
+        return this.form.userBrith.length > 4 && this.form.userBrith.length < 10 ? true : false
       },
       validationTel(){
-        return this.userTel.length > 10 && this.userTel.length < 15 ? true : false
+        return this.form.userTel.length > 10 && this.form.userTel.length < 15 ? true : false
       }
     },
 }
@@ -236,7 +238,8 @@ li { display: inline-block; margin: 0 10px; }
 .message { font-size: 1rem;}
 .bv-no-focus-ring { font-size: 1.5rem; }
 .subject { font-size: 2rem; margin-top: 30px; }
-.confirm { margin-top: 6rem; margin-left: 0.5rem;}
+.confirm { margin-top: 8rem; margin-left: 1rem;}
+.ql-quillWrapper { stroke: rgb(34 164 234 / 95%);}
 
 @media (max-width: 576px) {
   .message { font-size: 0.5rem;}
