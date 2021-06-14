@@ -16,6 +16,7 @@
     "google-fonts-webpack-plugin": "^0.4.4",
     "vue": "^2.6.12",
     "vue-meta": "^2.4.0",
+    "vue-moment": "^4.1.0",
     "vue-router": "^3.0.1",
     "vue2-editor": "^2.10.2"
   },

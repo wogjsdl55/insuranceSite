@@ -14,8 +14,9 @@
                     placeholder="제목을 입력해주세요."
                     required
                     class="subject"
-                    ></b-form-input>
-
+                    >
+                    {{ $route.detail }}
+                    </b-form-input>
               </b-card>
               <b-card>
                   <b-form-group v-slot="{ ariaDescribedby }">
@@ -70,7 +71,7 @@ import footerArea from './FooterArea.vue'
 import { VueEditor } from "vue2-editor";
 
 export default {
-  name: 'App',
+  name: 'detail',
   components: {
     'topArea': topArea,
     'footerArea': footerArea,

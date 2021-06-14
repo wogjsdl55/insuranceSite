@@ -72,7 +72,7 @@
             noCollapse
             :per-page="perPage"
             :current-page="currentPage"
-            @row-clicked="clickEvent"
+            v-b-modal.pwdCheck
           >
             <template #table-colgroup="scope">
               <col
@@ -83,7 +83,11 @@
               >
             </template>
             <template v-slot:cell(subject)="data">
-              <span v-html ="data.value" style="float:left;">{{ data.value.format('MM/DD/YYYY') }}</span>
+              <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
+            </template>
+            
+            <template v-slot:cell(regdate)="data">
+              <span>{{ $moment(data.value).format('YYYY-MM-DD') }}</span>
             </template>
 
             <template v-slot:cell(counselStatus)="data">
@@ -92,6 +96,31 @@
                <b-button v-if="data.item.counselStatus ==='2'"  > 상담완료 </b-button>
           </template>
           </b-table>
+
+           <b-modal
+              id="pwdCheck"
+              ref="modal"
+              @ok="handleOk"
+              ok-title="확인"
+              cancel-title="취소"
+              centered
+            >
+              <form ref="form" @submit.stop.prevent="handleSubmit">
+                <b-form-group
+                  label="비밀번호 입력"
+                  label-for="name-input"
+                  invalid-feedback="비밀번호를 입력해주시기 바랍니다."
+                  :state="nameState" 
+                >
+                  <b-form-input
+                    id="name-input"
+                    v-model="pwd"
+                    :state="nameState"
+                    required
+                  ></b-form-input>
+                </b-form-group>
+              </form>
+            </b-modal>
         </b-card>
 
         <b-col>
@@ -130,6 +159,7 @@ export default {
 	},
   data() {
     return {
+      pwd:'',
       slide: 0,
       sliding: null,
       currentPage: 1,
@@ -139,6 +169,7 @@ export default {
       userName: '',
       regdate: '',
       counselStatus: '',
+      nameState: null,
       fields: [ { key: 'seq', label: '번호'}, { key: 'subject', label: '제목'} , { key: 'userName', label: '작성자'}, { key: 'regdate', label: '작성일'}, { key: 'counselStatus', label: '상당상태'} ],
       items: [],
     }
@@ -164,9 +195,36 @@ export default {
         if (!item || type !== 'row') return
         if (item.status === 'register') return 'table-success'
     },
-    clickEvent(item){
-      this.$http.post('/boardDetail', item);
-    }
+    checkFormValidity() {
+        const valid = this.$refs.form.checkValidity()
+        this.nameState = valid
+        return valid
+      },
+      handleOk(bvModalEvt) {
+        // Prevent modal from closing
+        bvModalEvt.preventDefault()
+        // Trigger submit handler
+        this.handleSubmit()
+      },
+      handleSubmit() {
+        // Exit when the form isn't valid
+        if (!this.checkFormValidity()) {
+          return
+        }
+
+        this.$http.post("/api/boardCheck", { pwd: this.pwd}) 
+        .then(res => {         
+          
+        })
+        .catch(function (error) {
+          alert(error);
+        })
+
+        
+        this.$nextTick(() => {
+          this.$bvModal.hide('modal-prevent-closing')
+        })
+      }
 
   },
   computed: {

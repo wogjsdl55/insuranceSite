@@ -18,6 +18,7 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 Vue.use(Vue2Editor);
+Vue.use(require('vue-moment'))
 
 /* eslint-disable no-new */
 new Vue({
