@@ -45,14 +45,14 @@ router.post('/boardSubmit', function(req, res, next) {
 
 router.post('/boardCheck', function(req, res, next) {
   // 쿼리 날려서 가져오기
-  console.log(req.body.pwd);
-  connection.query(`SELECT seq, subject, userName, regdate, counselStatus FROM board WHERE pwd='${ req.body.pwd}'`,
+  console.log(req.body);
+  connection.query(`SELECT seq, subject, userName, regdate, counselStatus FROM board WHERE pwd='${req.body.pwd}'`,
   (error, rows) => {
     if (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
     }
-    console.log(rows);
+  
     res.send(rows);
   });
 });

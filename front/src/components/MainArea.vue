@@ -86,6 +86,10 @@
               <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
             </template>
             
+            <template v-slot:cell(userName)="data">
+              <span>{{ data.value.replace(/(?<=.{2})./gi, "*") }}</span>
+            </template>
+
             <template v-slot:cell(regdate)="data">
               <span>{{ $moment(data.value).format('YYYY-MM-DD') }}</span>
             </template>
@@ -211,8 +215,8 @@ export default {
         if (!this.checkFormValidity()) {
           return
         }
-
-        this.$http.post("/api/boardCheck", { pwd: this.pwd}) 
+        console.log(this.seq);
+        this.$http.post("/api/boardCheck", { seq: this.seq, pwd: this.pwd}) 
         .then(res => {         
           
         })
