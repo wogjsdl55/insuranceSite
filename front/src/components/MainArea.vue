@@ -6,7 +6,7 @@
       <b-row>
           <b-carousel
             v-model="slide"
-            :interval="10000"    
+            :interval="1000000"    
             indicators
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
@@ -72,7 +72,8 @@
             noCollapse
             :per-page="perPage"
             :current-page="currentPage"
-            v-b-modal.pwdCheck
+            selectable
+            @row-selected="clickEvent"
           >
             <template #table-colgroup="scope">
               <col
@@ -82,6 +83,7 @@
                 :style="{ width: field.key === 'subject' ? '500px' : '100px' }"
               >
             </template>
+            
             <template v-slot:cell(subject)="data">
               <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
             </template>
@@ -102,7 +104,7 @@
           </b-table>
 
            <b-modal
-              id="pwdCheck"
+              :id="'pwdCheck'"
               ref="modal"
               @ok="handleOk"
               ok-title="확인"
@@ -189,6 +191,10 @@ export default {
           alert(error);
         })
     },
+    clickEvent(item) {
+      this.seq = item[0].seq;
+      this.$bvModal.show("pwdCheck");
+    },
     onSlideStart(slide) {
       this.sliding = true
     },
@@ -215,7 +221,6 @@ export default {
         if (!this.checkFormValidity()) {
           return
         }
-        console.log(this.seq);
         this.$http.post("/api/boardCheck", { seq: this.seq, pwd: this.pwd}) 
         .then(res => {         
           
