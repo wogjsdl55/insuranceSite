@@ -73,6 +73,7 @@
             :per-page="perPage"
             :current-page="currentPage"
             selectable
+            select-mode="single"
             @row-selected="clickEvent"
           >
             <template #table-colgroup="scope">
@@ -222,8 +223,12 @@ export default {
           return
         }
         this.$http.post("/api/boardCheck", { seq: this.seq, pwd: this.pwd}) 
-        .then(res => {         
-          
+        .then(res => {      
+          if(res.data == '0'){
+            alert('비밀번호가 일치하지않습니다.');
+          }else {
+            this.$router.push( { name : 'BoardDetail', params: { res } });
+          }
         })
         .catch(function (error) {
           alert(error);

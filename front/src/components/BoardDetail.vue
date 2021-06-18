@@ -10,19 +10,18 @@
                 <b-card>
                     <b-form-input
                     id="input-1"
-                    v-model="subject"
+                    v-model="$route.params.res.data[0].subject"
                     placeholder="제목을 입력해주세요."
                     required
                     class="subject"
                     >
-                    {{ $route.detail }}
                     </b-form-input>
               </b-card>
               <b-card>
                   <b-form-group v-slot="{ ariaDescribedby }">
                     <b-form-checkbox-group
                       id="checkbox-group-1"
-                      v-model="checkbox"
+                      v-model="$route.params.res.data[0].checkOption"
                       :options="checkOptions"
                       :aria-describedby="ariaDescribedby"
                       name="flavour-1"
@@ -36,7 +35,7 @@
       </b-row>
 
       <b-row>
-        <vue-editor v-model="content" :editor-toolbar="customToolbar"  />
+        <vue-editor v-model="$route.params.res.data[0].content" :editor-toolbar="customToolbar"  />
       </b-row>
 
     <b-card bg-variant="dark" text-variant="white" title="Card Title">
@@ -84,7 +83,7 @@ export default {
         gender: 'M',
         userTel:'',
         subject: '',
-        checkbox:[],
+        checkOption:[],
         content: "",
         customToolbar: [
           ["bold", "italic", "underline"],

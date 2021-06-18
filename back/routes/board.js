@@ -38,22 +38,25 @@ router.post('/boardSubmit', function(req, res, next) {
       res.status(500).send('Internal Server Error');
     }
 
-    console.log(': ', rows);
+    console.log('rows'+ rows);
     res.send(rows);
   });
 });
 
 router.post('/boardCheck', function(req, res, next) {
   // 쿼리 날려서 가져오기
-  console.log(req.body);
-  connection.query(`SELECT seq, subject, userName, regdate, counselStatus FROM board WHERE pwd='${req.body.pwd}'`,
+
+  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, counselStatus FROM board WHERE pwd='${req.body.pwd}' AND seq='${req.body.seq}'`,
   (error, rows) => {
     if (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
     }
-  
-    res.send(rows);
+    if(rows.length > 0){
+      res.send(rows);
+    }else {
+      res.send('0');
+    }
   });
 });
 
