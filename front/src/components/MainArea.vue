@@ -94,7 +94,7 @@
             </template>
 
             <template v-slot:cell(regdate)="data">
-              <span>{{ $moment(data.value).format('YYYY-MM-DD') }}</span>
+              <span>{{ $moment(data.value).format('YYYY-MM-DD HH:mm') }}</span>
             </template>
 
             <template v-slot:cell(counselStatus)="data">

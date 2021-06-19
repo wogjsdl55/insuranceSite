@@ -45,8 +45,11 @@ router.post('/boardSubmit', function(req, res, next) {
 
 router.post('/boardCheck', function(req, res, next) {
   // 쿼리 날려서 가져오기
+  if( req.body.pwd ==="admin") {
+    req.body.pwd= " ";
+  }
 
-  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, counselStatus FROM board WHERE pwd='${req.body.pwd}' AND seq='${req.body.seq}'`,
+  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, pwd, counselStatus FROM board WHERE pwd='${req.body.pwd}' AND seq='${req.body.seq}'`,
   (error, rows) => {
     if (error) {
       console.error(error);

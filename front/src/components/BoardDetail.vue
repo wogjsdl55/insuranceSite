@@ -6,11 +6,15 @@
       
       <b-row>
           <b-container class="bv-example-row">
+            <h3 v-if="pwd ==='admin'">
+             성별 :  {{ gender }},  번호: {{ userTel }} userTel
+            </h3>
+            
             <b-form inline>
                 <b-card>
                     <b-form-input
                     id="input-1"
-                    v-model="$route.params.res.data[0].subject"
+                    v-model="subject"
                     placeholder="제목을 입력해주세요."
                     required
                     class="subject"
@@ -21,7 +25,7 @@
                   <b-form-group v-slot="{ ariaDescribedby }">
                     <b-form-checkbox-group
                       id="checkbox-group-1"
-                      v-model="$route.params.res.data[0].checkOption"
+                      v-model="checkOption"
                       :options="checkOptions"
                       :aria-describedby="ariaDescribedby"
                       name="flavour-1"
@@ -33,9 +37,12 @@
             </b-form>
             </b-container>
       </b-row>
-
       <b-row>
-        <vue-editor v-model="$route.params.res.data[0].content" :editor-toolbar="customToolbar"  />
+         <b-col><h3 style="float: left;">작성자 : {{ userName }}</h3></b-col>
+         <b-col><h3>작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
+      </b-row>
+      <b-row>
+        <vue-editor v-model="content" :editor-toolbar="customToolbar"  />
       </b-row>
 
     <b-card bg-variant="dark" text-variant="white" title="Card Title">
@@ -76,20 +83,38 @@ export default {
     'footerArea': footerArea,
     VueEditor
   },
-    data() {
+  created () {
+        const userName = this.$route.params.res.data[0].userName;
+        const checkOption = this.$route.params.res.data[0].checkOption;
+        const subject = this.$route.params.res.data[0].subject;
+        const gender = this.$route.params.res.data[0].gender;
+        const userTel = this.$route.params.res.data[0].userTel;
+        const content = this.$route.params.res.data[0].content;
+        const pwd = this.$route.params.res.data[0].pwd;
+        const regdate = this.$route.params.res.data[0].regdate;
+
+        if (userName === undefined) { this.$router.go(-1); } 
+        if (checkOption === undefined) { this.$router.go(-1); } 
+        if (subject === undefined) { this.$router.go(-1); } 
+        if (gender === undefined) { this.$router.go(-1); } 
+        if (userTel === undefined) { this.$router.go(-1); } 
+        if (content === undefined) { this.$router.go(-1); } 
+        if (pwd === undefined) { this.$router.go(-1); } 
+        if (regdate === undefined) { this.$router.go(-1); } 
+  },
+  data() {
       return {
-        userName: '',
-        userBrith: '',
-        gender: 'M',
-        userTel:'',
-        subject: '',
-        checkOption:[],
-        content: "",
+        userName: this.$route.params.res.data[0].userName,
+        userBrith: this.$route.params.res.data[0].userBrith,
+        gender: this.$route.params.res.data[0].gender,
+        userTel:this.$route.params.res.data[0].userTel,
+        checkbox:this.$route.params.res.data[0].checkbox,
+        content: this.$route.params.res.data[0].content,
+        pwd: this.$route.params.res.data[0].pwd,
+        regdate: this.$route.params.res.data[0].regdate,
+        checkOption: this.$route.params.res.data[0].checkOption,
         customToolbar: [
-          ["bold", "italic", "underline"],
-          [{ list: "ordered" }, { list: "bullet" },],
-          [{ align: "" }, { align: "center" }, { align: "right" }, { align: "justify" } ],
-          ["image"],[{color: [] }]
+        []
         ],
         options: [
             { text: '남성', value: 'M' },
@@ -110,7 +135,6 @@ export default {
         alert(JSON.stringify(this.form))
       }
   },
-
   computed: {
       rows() {
         return this.items.length
