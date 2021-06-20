@@ -42,7 +42,7 @@
 
             <b-card>
               <b-card>
-                  <b-col style="padding-bottom: 1rem;"><b-img class="kakao" :src="require('../assets/main/kakao_plus_img.png')" ></b-img></b-col>
+                  <b-col style="padding-bottom: 1rem;"><b-img class="kakao" :src="require('../assets/main/kakao_plus_img.png')" @click="kakao"></b-img></b-col>
 
                   <b-col><a><b-button  variant="success" size="sm" class="success_btn" ><b class="button_q">자주묻는질문</b></b-button></a></b-col>
                 </b-card>
@@ -221,6 +221,11 @@ export default {
         // Trigger submit handler
         this.handleSubmit()
       },
+      kakao(){
+        this.$kakao.Channel.addChannel({
+          channelPublicId: '_xcLqmC',
+        })
+      },
       handleSubmit() {
         // Exit when the form isn't valid
         if (!this.checkFormValidity()) {
@@ -283,6 +288,7 @@ a { color: #42b983; }
 .btn-danger{ border-radius: 20px / 25px; color: white; }
 .btn-warning{ border-radius: 20px / 25px; color: white; }
 .main_big_img  { height: 40rem;}
+.kakao:hover { cursor: pointer; }
 
 @media (max-width: 576px) {
   table { font-size:0.5rem; }

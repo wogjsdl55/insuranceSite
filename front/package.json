@@ -15,6 +15,7 @@
     "bootstrap-vue": "^2.21.2",
     "google-fonts-webpack-plugin": "^0.4.4",
     "vue": "^2.6.12",
+    "vue-kakao-sdk": "0.0.4",
     "vue-meta": "^2.4.0",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.0.1",

@@ -148,7 +148,6 @@ export default {
   methods: {
     dataList(){
       this.data = { "seq": this.seq }
-
       this.$http.post("/api/boardreplyList", this.data) 
         .then(res => {        
           this.replys = res.data;
