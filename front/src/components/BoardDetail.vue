@@ -6,11 +6,11 @@
       
       <b-row>
           <b-container class="bv-example-row">
-            <h3 v-if="pwd ==='admin'">
-             성별 :  {{ gender }},  번호: {{ userTel }} userTel
+            <h3 v-if="this.$route.params.res.data[1] ===0">
+             성별 :  {{ gender }}, 생일: {{ userBrith }}, 번호: {{ userTel }} 
             </h3>
             
-            <b-form inline>
+            <b-form inline @submit="onSubmit">
                 <b-card>
                     <b-form-input
                     id="input-1"
@@ -44,18 +44,40 @@
       <b-row>
         <vue-editor v-model="content" :editor-toolbar="customToolbar"  />
       </b-row>
-
-    <b-card bg-variant="dark" text-variant="white" title="Card Title">
-        <b-card-text>
-            With supporting text below as a natural lead-in to additional content.
-        </b-card-text>
-        <b-button href="#" variant="primary">Go somewhere</b-button>
-    </b-card>
+    <b-row   style="margin-top: 6rem;">
+      <b-card bg-variant="default" style="background: #f3f1ee">
+          <ul class="demo">
+            <li v-for="reply in replys" v-bind:key = "reply.seq">
+              {{ reply.comment }}
+            </li>
+          </ul>
+      
+      </b-card>
+      <b-card bg-variant="default" style="background: #f3f1ee">
+         <b-card-text>
+            <b-form inline  @submit="onReplySubmit" method="post">
+              <b-input-group class="mb-3">
+                <b-input-group-prepend is-text>
+                  <b-icon icon="reply" ></b-icon>
+                </b-input-group-prepend>
+                <b-form-input 
+                    v-model="form.comment"
+                    class="mb-2 mr-sm-8 mb-sm-0"
+                    placeholder="댓글을 입력해주시기 바랍니다."
+                    required
+                >
+                </b-form-input>
+            </b-input-group>
+            <b-button type="submit" variant="primary">댓글등록</b-button>
+            </b-form>
+         </b-card-text>
+      </b-card>
+    </b-row>
     
     <b-row>
         <b-col>
-          <b-button class="confirm" to="/board" size="lg" variant="primary" v-b-modal.modal>등록</b-button>
-          <b-button class="confirm" to="/board" size="lg" variant="secondary">취소</b-button>
+          <b-button class="confirm" to="/board" size="lg" variant="primary" v-b-modal.modal>수정</b-button>
+          <b-button class="confirm" to="/" size="lg" variant="secondary">취소</b-button>
 
           <b-modal id="modal" modal-title="no" centered  ok-only okTitle="확인"> 
             <p class="my-4"  style="text-align: center;">
@@ -83,36 +105,30 @@ export default {
     'footerArea': footerArea,
     VueEditor
   },
-  created () {
-        const userName = this.$route.params.res.data[0].userName;
-        const checkOption = this.$route.params.res.data[0].checkOption;
-        const subject = this.$route.params.res.data[0].subject;
-        const gender = this.$route.params.res.data[0].gender;
-        const userTel = this.$route.params.res.data[0].userTel;
-        const content = this.$route.params.res.data[0].content;
-        const pwd = this.$route.params.res.data[0].pwd;
-        const regdate = this.$route.params.res.data[0].regdate;
-
-        if (userName === undefined) { this.$router.go(-1); } 
-        if (checkOption === undefined) { this.$router.go(-1); } 
-        if (subject === undefined) { this.$router.go(-1); } 
-        if (gender === undefined) { this.$router.go(-1); } 
-        if (userTel === undefined) { this.$router.go(-1); } 
-        if (content === undefined) { this.$router.go(-1); } 
-        if (pwd === undefined) { this.$router.go(-1); } 
-        if (regdate === undefined) { this.$router.go(-1); } 
+  mounted() { 
+    //페이지 시작하면은 자동 함수 실행
+		this.dataList();
+	},
+  beforeCreate(){
+    if(this.$route.params.res === undefined) { this.$router.go(-1) }
   },
   data() {
       return {
+        data: [],
+        form: {
+          comment:''
+        },
+        seq: this.$route.params.res.data[0].seq,
+        subject: this.$route.params.res.data[0].subject,
         userName: this.$route.params.res.data[0].userName,
         userBrith: this.$route.params.res.data[0].userBrith,
         gender: this.$route.params.res.data[0].gender,
         userTel:this.$route.params.res.data[0].userTel,
-        checkbox:this.$route.params.res.data[0].checkbox,
         content: this.$route.params.res.data[0].content,
         pwd: this.$route.params.res.data[0].pwd,
         regdate: this.$route.params.res.data[0].regdate,
-        checkOption: this.$route.params.res.data[0].checkOption,
+        checkOption: [this.$route.params.res.data[0].checkOption],
+        replys: [],
         customToolbar: [
         []
         ],
@@ -130,15 +146,36 @@ export default {
       }
   },
   methods: {
+    dataList(){
+      this.data = { "seq": this.seq }
+
+      this.$http.post("/api/boardreplyList", this.data) 
+        .then(res => {        
+          this.replys = res.data;
+        })
+        .catch(function (error) {
+          alert(error);
+        })
+    },
      onSubmit() {
         event.preventDefault()
         alert(JSON.stringify(this.form))
+      },
+      onReplySubmit() {
+        event.preventDefault()
+   
+        this.data = { "comment": this.form.comment, "seq": this.seq, "userName": this.userName, "adminYN" :this.$route.params.res.data[1] }
+
+        this.$http.post("/api/boardReply", this.data) 
+        .then(res => {         
+          alert('댓글등록이 완료되었습니다.');
+        })
+        .catch(function (error) {
+          alert(error);
+        })
       }
   },
   computed: {
-      rows() {
-        return this.items.length
-      },
       validationName() {
         return this.userName.length > 1 && this.userName.length < 5 ? true : false
       },

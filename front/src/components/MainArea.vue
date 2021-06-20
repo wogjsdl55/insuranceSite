@@ -1,152 +1,156 @@
 <template>
-    <b-container >
-      <b-row id="top">
-        <topArea/>
-      </b-row>
-      <b-row>
-          <b-carousel
-            v-model="slide"
-            :interval="1000000"    
-            indicators
-            @sliding-start="onSlideStart"
-            @sliding-end="onSlideEnd"
-            img-width="1024"
-          img-height="500"
-            style="text-shadow: 1px 1px 2px #333;"
-          >
-            <!-- Slides with image only -->
-            <b-carousel-slide
-        caption="First slide"
-        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        img-src="https://picsum.photos/1024/480/?image=52"
-      ></b-carousel-slide>
+    <div>
+      <b-container>
+        <b-row id="top">
+          <topArea/>
+        </b-row>
+      </b-container>
+        <b-row>
+            <b-carousel
+              v-model="slide"
+              :interval="1000000"    
+              indicators
+              @sliding-start="onSlideStart"
+              @sliding-end="onSlideEnd"
+              img-width="1024"
+              img-height="300"
+              style="text-shadow: 1px 1px 2px #333;"
+            >
+              <!-- Slides with image only -->
+              <b-carousel-slide
+                img-src="https://picsum.photos/1024/480/?image=52"
+                class="main_big_img"
+              ></b-carousel-slide>
 
-        <!-- Slides with custom text -->
-        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-          <h1>Hello world!</h1>
-        </b-carousel-slide>
+          <!-- Slides with custom text -->
+          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+            <h1>Hello world!</h1>
+          </b-carousel-slide>
 
-        </b-carousel>
- 
+          </b-carousel>
+        </b-row>
+      <b-container>
+        <b-row>
+            <b-card-group>
+              <b-card>
+                <b-col size="sm">
+                  <b-card  style="height: 120%;">
+                    <a href=""><b-button  size="lg" style="width:100%; height: 80%;"><b class="main_button">상담문의 하기</b></b-button></a>
+                  </b-card>
+                </b-col>
+              </b-card>
 
-          <b-card-group>
             <b-card>
-              <b-col size="sm">
-                <b-card  style="height: 120%;">
-                  <a href=""><b-button  size="lg" style="width:100%; height: 80%;"><b class="main_button">상담문의 하기</b></b-button></a>
+              <b-card>
+                  <b-col style="padding-bottom: 1rem;"><b-img class="kakao" :src="require('../assets/main/kakao_plus_img.png')" ></b-img></b-col>
+
+                  <b-col><a><b-button  variant="success" size="sm" class="success_btn" ><b class="button_q">자주묻는질문</b></b-button></a></b-col>
                 </b-card>
-              </b-col>
             </b-card>
 
-           <b-card>
-             <b-card>
-                 <b-col style="padding-bottom: 1rem;"><b-img class="kakao" :src="require('../assets/main/kakao_plus_img.png')" ></b-img></b-col>
-
-                 <b-col><a><b-button  variant="success" size="sm" class="success_btn" ><b class="button_q">자주묻는질문</b></b-button></a></b-col>
+              <b-card>
+                  <b-col>
+                    <b-card-text>
+                        <span class="main_tel1" style="padding-top: 1rem; font-weight: bold;" >Kim & Lim 전화번호</span><br>
+                        <span class="main_tel3" >010-5427-3793 </span>
+                        <span class="main_tel3" >, 010-6744-3789 </span>
+                        <br>
+                        <br>
+                        <br>
+                        <span class="main_tel2" >010-5427-3793 </span><br>
+                        <span class="main_tel2" >010-6744-3789 </span>
+                    </b-card-text>
+                  </b-col>
               </b-card>
+          </b-card-group>
+        </b-row>
+        <b-row>
+          <h2 style="font-weight:bold; padding-top: 3rem;">상담문의 게시판</h2>
+          <b-card>
+            <b-table 
+              :items="items" 
+              :fields="fields"
+              outlined
+              hover
+              noCollapse
+              :per-page="perPage"
+              :current-page="currentPage"
+              selectable
+              select-mode="single"
+              @row-selected="clickEvent"
+            >
+              <template #table-colgroup="scope">
+                <col
+                  v-for="field in scope.fields"
+                  :key="field.key"
+                  class="subject"
+                  :style="{ width: field.key === 'subject' ? '500px' : '100px' }"
+                >
+              </template>
+              
+              <template v-slot:cell(subject)="data">
+                <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
+              </template>
+              
+              <template v-slot:cell(userName)="data">
+                <span>{{ data.value.replace(/.$/, "*") }}</span>
+              </template>
+
+              <template v-slot:cell(regdate)="data">
+                <span>{{ $moment(data.value).format('YYYY-MM-DD HH:mm') }}</span>
+              </template>
+
+              <template v-slot:cell(counselStatus)="data">
+                <b-button v-if="data.item.counselStatus ==='0'"  variant="danger" > 상담중 </b-button>
+                <b-button v-if="data.item.counselStatus ==='1'"  variant="warning"> 상담신청 </b-button>
+                <b-button v-if="data.item.counselStatus ==='2'"  > 상담완료 </b-button>
+            </template>
+            </b-table>
+
+            <b-modal
+                :id="'pwdCheck'"
+                ref="modal"
+                @ok="handleOk"
+                ok-title="확인"
+                cancel-title="취소"
+                centered
+              >
+                <form ref="form" @submit.stop.prevent="handleSubmit">
+                  <b-form-group
+                    label="비밀번호 입력"
+                    label-for="name-input"
+                    invalid-feedback="비밀번호를 입력해주시기 바랍니다."
+                    :state="nameState" 
+                  >
+                    <b-form-input
+                      id="name-input"
+                      v-model="pwd"
+                      :state="nameState"
+                      required
+                    ></b-form-input>
+                  </b-form-group>
+                </form>
+              </b-modal>
           </b-card>
 
-            <b-card>
-                <b-col>
-                  <b-card-text>
-                      <span class="main_tel1" style="padding-top: 1rem; font-weight: bold;" >Kim & Lim 전화번호</span><br>
-                      <span class="main_tel3" >010-5427-3793 </span>
-                      <span class="main_tel3" >, 010-6744-3789 </span>
-                      <br>
-                      <br>
-                      <br>
-                      <span class="main_tel2" >010-5427-3793 </span><br>
-                      <span class="main_tel2" >010-6744-3789 </span>
-                  </b-card-text>
-                </b-col>
-            </b-card>
-        </b-card-group>
+          <b-col>
+            <b-button to="/board" size="sm" style="color: white; font-weight: bold;  width: 5rem;     margin-top: 0%;" variant="info">글쓰기</b-button>
+            <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+                align="center"
+                size="sm"
+              ></b-pagination>
+          </b-col>
+        </b-row>
 
-        <h2 style="font-weight:bold; padding-top: 3rem;">상담문의 게시판</h2>
-        <b-card>
-          <b-table 
-            :items="items" 
-            :fields="fields"
-            outlined
-            hover
-            noCollapse
-            :per-page="perPage"
-            :current-page="currentPage"
-            selectable
-            select-mode="single"
-            @row-selected="clickEvent"
-          >
-            <template #table-colgroup="scope">
-              <col
-                v-for="field in scope.fields"
-                :key="field.key"
-                class="subject"
-                :style="{ width: field.key === 'subject' ? '500px' : '100px' }"
-              >
-            </template>
-            
-            <template v-slot:cell(subject)="data">
-              <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
-            </template>
-            
-            <template v-slot:cell(userName)="data">
-              <span>{{ data.value.replace(/(?<=.{2})./gi, "*") }}</span>
-            </template>
-
-            <template v-slot:cell(regdate)="data">
-              <span>{{ $moment(data.value).format('YYYY-MM-DD HH:mm') }}</span>
-            </template>
-
-            <template v-slot:cell(counselStatus)="data">
-               <b-button v-if="data.item.counselStatus ==='0'"  variant="danger" > 상담중 </b-button>
-               <b-button v-if="data.item.counselStatus ==='1'"  variant="warning"> 상담신청 </b-button>
-               <b-button v-if="data.item.counselStatus ==='2'"  > 상담완료 </b-button>
-          </template>
-          </b-table>
-
-           <b-modal
-              :id="'pwdCheck'"
-              ref="modal"
-              @ok="handleOk"
-              ok-title="확인"
-              cancel-title="취소"
-              centered
-            >
-              <form ref="form" @submit.stop.prevent="handleSubmit">
-                <b-form-group
-                  label="비밀번호 입력"
-                  label-for="name-input"
-                  invalid-feedback="비밀번호를 입력해주시기 바랍니다."
-                  :state="nameState" 
-                >
-                  <b-form-input
-                    id="name-input"
-                    v-model="pwd"
-                    :state="nameState"
-                    required
-                  ></b-form-input>
-                </b-form-group>
-              </form>
-            </b-modal>
-        </b-card>
-
-        <b-col>
-          <b-button to="/board" size="sm" style="color: white; font-weight: bold;  width: 5rem;     margin-top: 0%;" variant="info">글쓰기</b-button>
-          <b-pagination
-              v-model="currentPage"
-              :total-rows="rows"
-              :per-page="perPage"
-              aria-controls="my-table"
-              align="center"
-              size="sm"
-            ></b-pagination>
-        </b-col>
-      </b-row>
-
-      <b-row id="footer">
-        <footerArea/>
-      </b-row>
-    </b-container>
+        <b-row id="footer">
+          <footerArea/>
+        </b-row>
+      </b-container>
+    </div>
 </template>
 
 
@@ -227,7 +231,7 @@ export default {
           if(res.data == '0'){
             alert('비밀번호가 일치하지않습니다.');
           }else {
-            this.$router.push( { name : 'BoardDetail', params: { res } });
+            this.$router.push( { name : 'BoardDetail', params : { res } });
           }
         })
         .catch(function (error) {
@@ -278,6 +282,7 @@ a { color: #42b983; }
 .status{ font-size: 1rem;}
 .btn-danger{ border-radius: 20px / 25px; color: white; }
 .btn-warning{ border-radius: 20px / 25px; color: white; }
+.main_big_img  { height: 40rem;}
 
 @media (max-width: 576px) {
   table { font-size:0.5rem; }
@@ -295,6 +300,7 @@ a { color: #42b983; }
   .btn-secondary{ font-size: 0.5rem; }
   .btn-danger{ font-size: 0.5rem; }
   .btn-warning{ font-size: 0.5rem; }
+  .main_big_img { height: 10rem;  }
 }
 </style>
 

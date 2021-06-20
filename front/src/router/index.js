@@ -24,9 +24,9 @@ export default new Router({
         component: BoardWrite
     },
     {
-      path: '/boardDetail:id?',
+      path: '/board/Detail:id?',
       name: 'BoardDetail',
       component: BoardDetail
-  }
+    }
   ]
 })

@@ -46,20 +46,61 @@ router.post('/boardSubmit', function(req, res, next) {
 router.post('/boardCheck', function(req, res, next) {
   // 쿼리 날려서 가져오기
   if( req.body.pwd ==="admin") {
-    req.body.pwd= " ";
+    //admin 으로 접속
+    adminYN = 0;
+  }else {
+    adminYN = 1;
   }
+  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, pwd, counselStatus FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}' `,
+  (error, rows) => {
+    console.log()
+    if (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+    debugger;
+    if(rows.length > 0){
+      rows.push(adminYN);
+      res.send(rows);
+    }else {
+      res.send('0');
+    }
+  });
+});
 
-  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, pwd, counselStatus FROM board WHERE pwd='${req.body.pwd}' AND seq='${req.body.seq}'`,
+router.post('/boardreplyList', function(req, res, next) {
+  // 쿼리 날려서 가져오기
+  
+  connection.query(`SELECT seq, comment, regdate, adminYN, userName FROM boardreply WHERE board_seq='${req.body.seq}' ORDER BY REGDATE ASC`,
   (error, rows) => {
     if (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
     }
-    if(rows.length > 0){
-      res.send(rows);
-    }else {
-      res.send('0');
+
+    console.log(': ', rows);
+    res.send(rows);
+  });
+});
+
+
+router.post('/boardReply', function(req, res, next) {
+  if( req.body.adminYN ===0) {
+    //admin 으로 접속
+    adminYN = 0;
+    userName = "관리자";
+  }else {
+    adminYN = 1;
+    userName = req.body.userName;
+  }
+  // 댓글등록 insert
+  connection.query(`INSERT INTO boardreply (board_seq, comment, adminYN, userName) VALUES('${ req.body.seq}', '${ req.body.comment}', '${ adminYN }', '${ userName }')`,
+  (error, rows) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
     }
+    res.send(rows);
   });
 });
 
