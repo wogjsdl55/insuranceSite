@@ -47,8 +47,19 @@
     <b-row   style="margin-top: 6rem;">
       <b-card bg-variant="default" style="background: #f3f1ee">
           <ul class="demo">
-            <li v-for="reply in replys" v-bind:key = "reply.seq">
-              {{ reply.comment }}
+            <li v-for="reply in replys" v-bind:key = "reply.seq" style="width: 100%;">
+              <p  v-if="reply.adminYN === '1'" style="float:left">
+                   <b-button variant="light" disable class="replycss">
+                      {{ reply.comment }}
+                   </b-button>
+                   {{ $moment(data.value).format('A HH:mm') }}
+              </p>
+              <p  v-if="reply.adminYN === '0'" style="float:right">
+                  {{ $moment(data.value).format('A HH:mm') }}
+                  <b-button variant="light" disable class="replycss" >
+                    {{ reply.comment }}
+                  </b-button>
+              </p>
             </li>
           </ul>
       
@@ -168,6 +179,7 @@ export default {
         this.$http.post("/api/boardReply", this.data) 
         .then(res => {         
           alert('댓글등록이 완료되었습니다.');
+          this.dataList();
         })
         .catch(function (error) {
           alert(error);
@@ -211,7 +223,7 @@ li { display: inline-block; margin: 0 10px; }
 .bv-no-focus-ring { font-size: 1.5rem; }
 .subject { font-size: 2rem; margin-top: 30px; }
 .confirm { margin-top: 6rem; margin-left: 0.5rem;}
-
+.replycss { font-size: 2rem; font-weight: 400; }
 @media (max-width: 576px) {
   .message { font-size: 0.5rem;}
   .card-header{ padding-right: 0; }
@@ -220,5 +232,6 @@ li { display: inline-block; margin: 0 10px; }
   .btn-group-toggle{ width: 9.5rem; }
   .bv-no-focus-ring { font-size: 0.7rem; }
   .subject { font-size: 1rem; margin-top: 20px; }
+  .replycss{ font-size: 1rem; font-weight: 400;}
 }
 </style>
