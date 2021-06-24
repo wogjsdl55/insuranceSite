@@ -77,6 +77,7 @@
                           </b-form-invalid-feedback>
                         </b-input-group>
                   </b-col>
+                   <div class= "lineCss"></div>
                   <b-col>
                       <b-input-group class="mb-3">
                           <b-input-group-prepend is-text>
@@ -240,6 +241,7 @@ li { display: inline-block; margin: 0 10px; }
 .subject { font-size: 2rem; margin-top: 30px; }
 .confirm { margin-top: 8rem; margin-left: 1rem;}
 .ql-quillWrapper { stroke: rgb(34 164 234 / 95%);}
+.lineCss { display: none;}
 
 @media (max-width: 576px) {
   .message { font-size: 0.5rem;}
@@ -249,5 +251,6 @@ li { display: inline-block; margin: 0 10px; }
   .btn-group-toggle{ width: 9.5rem; }
   .bv-no-focus-ring { font-size: 0.7rem; }
   .subject { font-size: 1rem; margin-top: 20px; }
+  .lineCss { display: block; }
 }
 </style>

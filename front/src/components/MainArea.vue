@@ -35,7 +35,7 @@
               <b-card>
                 <b-col size="sm">
                   <b-card  style="height: 120%;">
-                    <a href=""><b-button  size="lg" style="width:100%; height: 80%;"><b class="main_button">상담문의 하기</b></b-button></a>
+                    <a href="/board"><b-button  size="lg" style="width:100%; height: 80%;"><b class="main_button">상담문의 하기</b></b-button></a>
                   </b-card>
                 </b-col>
               </b-card>
@@ -84,12 +84,13 @@
                   v-for="field in scope.fields"
                   :key="field.key"
                   class="subject"
-                  :style="{ width: field.key === 'subject' ? '500px' : '100px' }"
+                  :style="{ width: field.key === 'subject' ? '450px' : '150px' }"
                 >
               </template>
               
               <template v-slot:cell(subject)="data">
-                <span v-html ="data.value" style="float:left;">{{ data.value }}</span>
+                <span v-html ="data.value" style="float:left;  font-size: 1rem;">{{ data.value }}</span>
+                <span v-html ="data.value" style="float:left;  font-size: 1rem;">{{ data.value }}</span>
               </template>
               
               <template v-slot:cell(userName)="data">
@@ -104,6 +105,7 @@
                 <b-button v-if="data.item.counselStatus ==='0'"  variant="danger" > 상담중 </b-button>
                 <b-button v-if="data.item.counselStatus ==='1'"  variant="warning"> 상담신청 </b-button>
                 <b-button v-if="data.item.counselStatus ==='2'"  > 상담완료 </b-button>
+                <b-button v-if="data.item.counselStatus ==='3'"  > 공지 </b-button>
             </template>
             </b-table>
 
@@ -181,6 +183,7 @@ export default {
       regdate: '',
       counselStatus: '',
       nameState: null,
+      notice: '',
       fields: [ { key: 'seq', label: '번호'}, { key: 'subject', label: '제목'} , { key: 'userName', label: '작성자'}, { key: 'regdate', label: '작성일'}, { key: 'counselStatus', label: '상당상태'} ],
       items: [],
     }
@@ -223,7 +226,7 @@ export default {
       },
       kakao(){
         this.$kakao.Channel.addChannel({
-          channelPublicId: '_xcLqmC',
+          channelPublicId: '_TcewK',
         })
       },
       handleSubmit() {
@@ -287,7 +290,7 @@ a { color: #42b983; }
 .status{ font-size: 1rem;}
 .btn-danger{ border-radius: 20px / 25px; color: white; }
 .btn-warning{ border-radius: 20px / 25px; color: white; }
-.main_big_img  { height: 40rem;}
+.main_big_img  { height: 35rem;}
 .kakao:hover { cursor: pointer; }
 
 @media (max-width: 576px) {

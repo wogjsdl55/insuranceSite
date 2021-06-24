@@ -10,94 +10,111 @@
              성별 :  {{ gender }}, 생일: {{ userBrith }}, 번호: {{ userTel }} 
             </h3>
             
-            <b-form inline @submit="onSubmit">
+            <b-form inline @submit="onSubmit" method="post">
+                  <b-card>
+                     <b-form-group v-slot="{ ariaDescribedby }" v-if="this.$route.params.res.data[1] ===0">
+                      <b-form-radio-group
+                        id="radio-group-1"
+                        v-model="form.counselStatus"
+                        :options="csStatusList"
+                        :aria-describedby="ariaDescribedby"
+                        plain
+                        name="radio-options"
+                      ></b-form-radio-group>
+                    </b-form-group>
+                    
+                    <b-form-checkbox
+                      id="checkbox-1"
+                      v-model="form.notice"
+                      name="checkbox-1"
+                      value="1"
+                      unchecked-value="0"
+                      v-if="this.$route.params.res.data[1] ===0"
+                    >
+                      공지등록
+                    </b-form-checkbox>
+
+
+                      <b-form-input
+                      id="input-1"
+                      v-model="form.subject"
+                      placeholder="제목을 입력해주세요."
+                      required
+                      class="subject"
+                      >
+                      </b-form-input>
+                </b-card>
                 <b-card>
-                    <b-form-input
-                    id="input-1"
-                    v-model="subject"
-                    placeholder="제목을 입력해주세요."
-                    required
-                    class="subject"
+                    <b-form-group v-slot="{ ariaDescribedby }">
+                      <b-form-checkbox-group
+                        id="checkbox-group-1"
+                        v-model="form.checkOption"
+                        :options="checkOptions"
+                        :aria-describedby="ariaDescribedby"
+                        name="flavour-1"
+                        plain
+                      ></b-form-checkbox-group>
+                    </b-form-group>
+                </b-card>
+                 <div>Selected: <strong>{{ form.checkOption }}</strong></div>
+          <b-row>
+            <b-col><h3 style="float: left;">작성자 : {{ userName }}</h3></b-col>
+            <b-col><h3>작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
+          </b-row>
+          <b-row>
+            <vue-editor v-model="form.content" :editor-toolbar="customToolbar"  />
+          </b-row>
+        <b-row   style="margin-top: 6rem; overflow: auto; height: 25rem;">
+          <b-card bg-variant="default" >
+              <ul class="demo">
+                <li v-for="reply in replys" v-bind:key = "reply.seq" style="width: 100%;">
+                  <p  v-if="reply.adminYN === '1'" style="float:left">
+                      <b-button variant="light" disable class="replycss">
+                          {{ reply.comment }}
+                      </b-button>
+                      {{ $moment(data.value).format('A HH:mm') }}
+                  </p>
+                  <p  v-if="reply.adminYN === '0'" style="float:right">
+                      {{ $moment(data.value).format('A HH:mm') }}
+                      <b-button variant="success" disable class="replycss" >
+                        {{ reply.comment }}
+                      </b-button>
+                  </p>
+                </li>
+              </ul>
+          
+          </b-card>
+        </b-row>
+        <b-row>
+         <b-card bg-variant="default" >
+            <b-card-text>
+                <b-form inline  @submit="onReplySubmit" method="post">
+                  <b-input-group class="mb-3">
+                    <b-input-group-prepend is-text>
+                      <b-icon icon="reply" ></b-icon>
+                    </b-input-group-prepend>
+                    <b-form-input 
+                        v-model="form.comment"
+                        class="mb-2 mr-sm-8 mb-sm-0"
+                        placeholder="댓글을 입력해주시기 바랍니다."
+                        required
                     >
                     </b-form-input>
-              </b-card>
-              <b-card>
-                  <b-form-group v-slot="{ ariaDescribedby }">
-                    <b-form-checkbox-group
-                      id="checkbox-group-1"
-                      v-model="checkOption"
-                      :options="checkOptions"
-                      :aria-describedby="ariaDescribedby"
-                      name="flavour-1"
-                      plain
-                    ></b-form-checkbox-group>
-                  </b-form-group>
-               </b-card>
-
-            </b-form>
-            </b-container>
-      </b-row>
-      <b-row>
-         <b-col><h3 style="float: left;">작성자 : {{ userName }}</h3></b-col>
-         <b-col><h3>작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
-      </b-row>
-      <b-row>
-        <vue-editor v-model="content" :editor-toolbar="customToolbar"  />
-      </b-row>
-    <b-row   style="margin-top: 6rem;">
-      <b-card bg-variant="default" style="background: #f3f1ee">
-          <ul class="demo">
-            <li v-for="reply in replys" v-bind:key = "reply.seq" style="width: 100%;">
-              <p  v-if="reply.adminYN === '1'" style="float:left">
-                   <b-button variant="light" disable class="replycss">
-                      {{ reply.comment }}
-                   </b-button>
-                   {{ $moment(data.value).format('A HH:mm') }}
-              </p>
-              <p  v-if="reply.adminYN === '0'" style="float:right">
-                  {{ $moment(data.value).format('A HH:mm') }}
-                  <b-button variant="light" disable class="replycss" >
-                    {{ reply.comment }}
-                  </b-button>
-              </p>
-            </li>
-          </ul>
-      
-      </b-card>
-      <b-card bg-variant="default" style="background: #f3f1ee">
-         <b-card-text>
-            <b-form inline  @submit="onReplySubmit" method="post">
-              <b-input-group class="mb-3">
-                <b-input-group-prepend is-text>
-                  <b-icon icon="reply" ></b-icon>
-                </b-input-group-prepend>
-                <b-form-input 
-                    v-model="form.comment"
-                    class="mb-2 mr-sm-8 mb-sm-0"
-                    placeholder="댓글을 입력해주시기 바랍니다."
-                    required
-                >
-                </b-form-input>
-            </b-input-group>
-            <b-button type="submit" variant="primary">댓글등록</b-button>
-            </b-form>
-         </b-card-text>
-      </b-card>
+                </b-input-group>
+                <b-button type="submit" variant="primary">댓글등록</b-button>
+                </b-form>
+            </b-card-text>
+          </b-card>
+        </b-row>
+        <b-row>
+            <b-col>
+              <b-button class="confirm" type="submit" size="lg" variant="primary" >수정</b-button>
+              <b-button class="confirm" to="/" size="lg" variant="secondary">취소</b-button>
+            </b-col>
+          </b-row>
+      </b-form>
+      </b-container>
     </b-row>
-    
-    <b-row>
-        <b-col>
-          <b-button class="confirm" to="/board" size="lg" variant="primary" v-b-modal.modal>수정</b-button>
-          <b-button class="confirm" to="/" size="lg" variant="secondary">취소</b-button>
-
-          <b-modal id="modal" modal-title="no" centered  ok-only okTitle="확인"> 
-            <p class="my-4"  style="text-align: center;">
-              상담신청시  빠른시일내로 <br>
-            </p>
-          </b-modal>
-        </b-col>
-      </b-row>
-
       <b-row id="footer">
         <footerArea/>
       </b-row>
@@ -115,10 +132,11 @@ export default {
     'topArea': topArea,
     'footerArea': footerArea,
     VueEditor
-  },
+  },  
   mounted() { 
     //페이지 시작하면은 자동 함수 실행
-		this.dataList();
+    this.dataList();
+    console.log(this.$route.params.res.data[0].counselStatus);
 	},
   beforeCreate(){
     if(this.$route.params.res === undefined) { this.$router.go(-1) }
@@ -126,22 +144,27 @@ export default {
   data() {
       return {
         data: [],
-        form: {
-          comment:''
-        },
-        seq: this.$route.params.res.data[0].seq,
-        subject: this.$route.params.res.data[0].subject,
         userName: this.$route.params.res.data[0].userName,
+        regdate: this.$route.params.res.data[0].regdate,
         userBrith: this.$route.params.res.data[0].userBrith,
         gender: this.$route.params.res.data[0].gender,
         userTel:this.$route.params.res.data[0].userTel,
-        content: this.$route.params.res.data[0].content,
-        pwd: this.$route.params.res.data[0].pwd,
-        regdate: this.$route.params.res.data[0].regdate,
-        checkOption: [this.$route.params.res.data[0].checkOption],
+        form: {
+          comment:'',
+          counselStatus: this.$route.params.res.data[0].counselStatus,
+          seq: this.$route.params.res.data[0].seq,
+          subject: this.$route.params.res.data[0].subject,  
+          content: this.$route.params.res.data[0].content,
+          pwd: this.$route.params.res.data[0].pwd,
+          checkOption: [this.$route.params.res.data[0].checkOption],
+          notice: '0'
+        },
         replys: [],
         customToolbar: [
-        []
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" },],
+          [{ align: "" }, { align: "center" }, { align: "right" }, { align: "justify" } ],
+          ["image"],[{color: [] }]
         ],
         options: [
             { text: '남성', value: 'M' },
@@ -152,15 +175,20 @@ export default {
           { text: '보장부족',     value: '2' },
           { text: '보장분석',     value: '3' },
           { text: '보험금청구',   value: '4' }
+        ],
+        csStatusList: [
+          { text: '상담중',       value: 0 },
+          { text: '상담신청',     value: 1 },
+          { text: '상담완료',     value: 2 },
         ]
 
       }
   },
   methods: {
     dataList(){
-      this.data = { "seq": this.seq }
+      this.data = { "seq": this.form.seq }
       this.$http.post("/api/boardreplyList", this.data) 
-        .then(res => {        
+        .then(res => {       
           this.replys = res.data;
         })
         .catch(function (error) {
@@ -169,12 +197,19 @@ export default {
     },
      onSubmit() {
         event.preventDefault()
-        alert(JSON.stringify(this.form))
+        this.$http.post("/api/boardUpdate", this.form) 
+        .then(res => {         
+          alert('수정 되었습니다.');
+          this.$router.go();
+        })
+        .catch(function (error) {
+          alert(error);
+        })
       },
       onReplySubmit() {
         event.preventDefault()
    
-        this.data = { "comment": this.form.comment, "seq": this.seq, "userName": this.userName, "adminYN" :this.$route.params.res.data[1] }
+        this.data = { "comment": this.form.comment, "seq": this.form.seq, "userName": this.form.userName, "adminYN" :this.$route.params.res.data[1] }
 
         this.$http.post("/api/boardReply", this.data) 
         .then(res => {         
