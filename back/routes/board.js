@@ -15,7 +15,7 @@ var router = express.Router();
 
  router.get('/boardList', function(req, res, next) {
   // 쿼리 날려서 가져오기
-  connection.query(`SELECT seq, subject, userName, regdate, counselStatus, notice FROM board`,
+  connection.query(`SELECT seq, subject, userName, regdate, counselStatus, notice FROM board  ORDER BY notice DESC, regdate DESC`,
   (error, rows) => {
     if (error) {
       console.error(error);
@@ -30,8 +30,19 @@ var router = express.Router();
 /* POST home page. */
 
 router.post('/boardSubmit', function(req, res, next) {
+  // 쿼리 날려서 가져오기
+  console.log(req.body.userPwd);
+  if( req.body.userPwd ==="admin") {
+    //admin 으로 접속
+    notice = 1;
+    userName = "관리자";
+    counselStatus = "4"
+  }else {
+    notice = 0;
+    userName = req.body.userName;
+  }
   // 쿼리 날려서 저장
-  connection.query(`INSERT INTO board (userName, userBrith, userTel, subject, content, gender, checkOption, pwd) VALUES('${ req.body.userName}', '${ req.body.userBrith}', '${ req.body.userTel}', '${ req.body.subject}', '${ req.body.content}', '${ req.body.gender}', '${ req.body.checkOption}', '${ req.body.userPwd}')`,
+  connection.query(`INSERT INTO board (userName, userBrith, userTel, subject, content, gender, checkOption, pwd, notice) VALUES('${userName}', '${ req.body.userBrith}', '${ req.body.userTel}', '${ req.body.subject}', '${ req.body.content}', '${ req.body.gender}', '${ req.body.checkOption}', '${ req.body.userPwd}', '${ notice }')`,
   (error, rows) => {
     if (error) {
       console.error(error);
@@ -46,7 +57,7 @@ router.post('/boardSubmit', function(req, res, next) {
 
 router.post('/boardUpdate', function(req, res, next) {
   // 쿼리 날려서 업데이트
-  connection.query(`UPDATE board  SET content ='${ req.body.content}', subject='${ req.body.subject}', checkOption='${ req.body.checkOption}', counselStatus='${ req.body.counselStatus}', notice='${ req.body.notice}' WHERE seq='${ req.body.seq }'`,
+  connection.query(`UPDATE board  SET content ='${ req.body.content}', subject='${ req.body.subject}', checkOption='${ req.body.checkOption}', counselStatus='${ req.body.counselStatus}'  WHERE seq='${ req.body.seq }'`,
   (error, rows) => {
     if (error) {
       console.error(error);
@@ -60,12 +71,14 @@ router.post('/boardUpdate', function(req, res, next) {
 
 router.post('/boardCheck', function(req, res, next) {
   // 쿼리 날려서 가져오기
+  console.log(req.body.pwd);
   if( req.body.pwd ==="admin") {
     //admin 으로 접속
     adminYN = 0;
   }else {
     adminYN = 1;
   }
+  console.log(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}'`);
   connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}' `,
   (error, rows) => {
     console.log()

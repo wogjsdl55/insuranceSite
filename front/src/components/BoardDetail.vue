@@ -6,13 +6,13 @@
       
       <b-row>
           <b-container class="bv-example-row">
-            <h3 v-if="this.$route.params.res.data[1] ===0">
+            <h3 v-if="this.$route.params.res.data[1] ===0 && this.notice === '0' ">
              성별 :  {{ gender }}, 생일: {{ userBrith }}, 번호: {{ userTel }} 
             </h3>
             
             <b-form inline @submit="onSubmit" method="post">
                   <b-card>
-                     <b-form-group v-slot="{ ariaDescribedby }" v-if="this.$route.params.res.data[1] ===0">
+                     <b-form-group v-slot="{ ariaDescribedby }" v-if="this.$route.params.res.data[1] ===0 && this.notice === '0'">
                       <b-form-radio-group
                         id="radio-group-1"
                         v-model="form.counselStatus"
@@ -23,28 +23,11 @@
                       ></b-form-radio-group>
                     </b-form-group>
                     
-                    <b-form-checkbox
-                      id="checkbox-1"
-                      v-model="form.notice"
-                      name="checkbox-1"
-                      value="1"
-                      unchecked-value="0"
-                      v-if="this.$route.params.res.data[1] ===0"
-                    >
-                      공지등록
-                    </b-form-checkbox>
-
-
-                      <b-form-input
-                      id="input-1"
-                      v-model="form.subject"
-                      placeholder="제목을 입력해주세요."
-                      required
-                      class="subject"
-                      >
-                      </b-form-input>
+                    
+                     <b-form-input id="input-1" v-model="form.subject" placeholder="제목을 입력해주세요." required class="subject" v-if="this.notice === '0'" > </b-form-input>
+                     <b-form-input id="input-1" v-model="form.subject" placeholder="제목을 입력해주세요." required class="subject" v-if="this.notice === '1'" disabled > </b-form-input>
                 </b-card>
-                <b-card>
+                <b-card v-if="this.notice === '0'">
                     <b-form-group v-slot="{ ariaDescribedby }">
                       <b-form-checkbox-group
                         id="checkbox-group-1"
@@ -61,11 +44,16 @@
             <b-col><h3 style="float: left;">작성자 : {{ userName }}</h3></b-col>
             <b-col><h3>작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
           </b-row>
-          <b-row>
+          <b-row  v-if="this.notice === '0'">
             <vue-editor v-model="form.content" :editor-toolbar="customToolbar"  />
           </b-row>
+
+          <b-row  v-if="this.notice === '1'">
+            <vue-editor v-model="form.content" :editor-toolbar="noticeToolbar"  disabled />
+          </b-row>
+
         <b-row   style="margin-top: 6rem; overflow: auto; height: 25rem;">
-          <b-card bg-variant="default" >
+          <b-card bg-variant="default" v-if="this.notice === '0'">
               <ul class="demo">
                 <li v-for="reply in replys" v-bind:key = "reply.seq" style="width: 100%;">
                   <p  v-if="reply.adminYN === '1'" style="float:left">
@@ -86,9 +74,9 @@
           </b-card>
         </b-row>
         <b-row>
-         <b-card bg-variant="default" >
-            <b-card-text>
-                <b-form inline  @submit="onReplySubmit" method="post">
+         <b-card bg-variant="default" v-if="this.notice === '0'">
+            <b-card-text >
+                <b-form inline  @submit="onReplySubmit" method="post" >
                   <b-input-group class="mb-3">
                     <b-input-group-prepend is-text>
                       <b-icon icon="reply" ></b-icon>
@@ -101,12 +89,12 @@
                     >
                     </b-form-input>
                 </b-input-group>
-                <b-button type="submit" variant="primary">댓글등록</b-button>
+                <b-button type="submit" variant="primary" >댓글등록</b-button>
                 </b-form>
             </b-card-text>
           </b-card>
         </b-row>
-        <b-row>
+        <b-row v-if="this.notice === '0'">
             <b-col>
               <b-button class="confirm" type="submit" size="lg" variant="primary" >수정</b-button>
               <b-button class="confirm" to="/" size="lg" variant="secondary">취소</b-button>
@@ -149,6 +137,7 @@ export default {
         userBrith: this.$route.params.res.data[0].userBrith,
         gender: this.$route.params.res.data[0].gender,
         userTel:this.$route.params.res.data[0].userTel,
+        notice:this.$route.params.res.data[0].notice,
         form: {
           comment:'',
           counselStatus: this.$route.params.res.data[0].counselStatus,
@@ -157,9 +146,11 @@ export default {
           content: this.$route.params.res.data[0].content,
           pwd: this.$route.params.res.data[0].pwd,
           checkOption: [this.$route.params.res.data[0].checkOption],
-          notice: '0'
         },
         replys: [],
+        noticeToolbar: [
+          []
+        ],
         customToolbar: [
           ["bold", "italic", "underline"],
           [{ list: "ordered" }, { list: "bullet" },],

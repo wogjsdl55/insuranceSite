@@ -66,6 +66,20 @@
         </b-row>
         <b-row>
           <h2 style="font-weight:bold; padding-top: 3rem;">상담문의 게시판</h2>
+          <b-col>
+            <!-- <b-form-select v-model="selected" :options="options" class="select"></b-form-select>
+            <b-form-input v-model="search" class="search"></b-form-input> -->
+            <b-input-group class="mb-3">
+              <b-input-group-prepend is-text >
+                <b-icon icon="search" ></b-icon>
+              </b-input-group-prepend>
+              <b-form-input
+                id="filter-input"
+                v-model="filter"
+                type="search"
+              ></b-form-input>
+            </b-input-group>
+          </b-col>
           <b-card>
             <b-table 
               :items="items" 
@@ -78,23 +92,26 @@
               selectable
               select-mode="single"
               @row-selected="clickEvent"
+              :filter="filter"
+              :filter-included-fields="filterOn"
+              @filtered="onFiltered"
             >
               <template #table-colgroup="scope">
                 <col
                   v-for="field in scope.fields"
                   :key="field.key"
                   class="subject"
-                  :style="{ width: field.key === 'subject' ? '450px' : '150px' }"
+                  :style="{ width: field.key === 'subject' ? '200px' : '100px' }"
                 >
               </template>
               
               <template v-slot:cell(subject)="data">
                 <span v-html ="data.value" style="float:left;  font-size: 1rem;">{{ data.value }}</span>
-                <span v-html ="data.value" style="float:left;  font-size: 1rem;">{{ data.value }}</span>
               </template>
-              
-              <template v-slot:cell(userName)="data">
-                <span>{{ data.value.replace(/.$/, "*") }}</span>
+
+              <template v-slot:cell(userName)="data" >
+                <span v-if="data.value === '관리자'"> {{ data.value }}</span>
+                <span v-if="data.value !== '관리자'"> {{ data.value.replace(/.$/, "*") }}</span>
               </template>
 
               <template v-slot:cell(regdate)="data">
@@ -159,6 +176,7 @@
 <script>
 import topArea from './TopArea.vue'
 import footerArea from './FooterArea.vue'
+import { Buffer } from 'buffer';
 
 export default {
   name: 'App',
@@ -186,6 +204,11 @@ export default {
       notice: '',
       fields: [ { key: 'seq', label: '번호'}, { key: 'subject', label: '제목'} , { key: 'userName', label: '작성자'}, { key: 'regdate', label: '작성일'}, { key: 'counselStatus', label: '상당상태'} ],
       items: [],
+      selected: '제목',
+      options: ['제목', '작성자'],
+      search: '',
+      filter: null,
+      filterOn: [],
     }
   },
 
@@ -201,7 +224,14 @@ export default {
     },
     clickEvent(item) {
       this.seq = item[0].seq;
-      this.$bvModal.show("pwdCheck");
+      this.notice = item[0].notice;
+
+      if(this.notice == "1"){
+        this.pwd = "admin"
+        this.handleSubmit();
+      }else {
+        this.$bvModal.show("pwdCheck");
+      }
     },
     onSlideStart(slide) {
       this.sliding = true
@@ -221,6 +251,12 @@ export default {
       handleOk(bvModalEvt) {
         // Prevent modal from closing
         bvModalEvt.preventDefault()
+
+        // Exit when the form isn't valid
+        if (!this.checkFormValidity()) {
+          return
+        }
+
         // Trigger submit handler
         this.handleSubmit()
       },
@@ -230,15 +266,17 @@ export default {
         })
       },
       handleSubmit() {
-        // Exit when the form isn't valid
-        if (!this.checkFormValidity()) {
-          return
-        }
+        var Buffer = require('buffer/').Buffer
+
         this.$http.post("/api/boardCheck", { seq: this.seq, pwd: this.pwd}) 
         .then(res => {      
-          if(res.data == '0'){
+          if(res.data == ' '){
             alert('비밀번호가 일치하지않습니다.');
           }else {
+            const blob = Buffer.from( res.data[0].content.data );
+            const content = blob.toString();
+            
+            res.data[0].content = content;
             this.$router.push( { name : 'BoardDetail', params : { res } });
           }
         })
@@ -250,6 +288,11 @@ export default {
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing')
         })
+      },
+      onFiltered(filteredItems) {
+        // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
       }
 
   },
@@ -292,6 +335,10 @@ a { color: #42b983; }
 .btn-warning{ border-radius: 20px / 25px; color: white; }
 .main_big_img  { height: 35rem;}
 .kakao:hover { cursor: pointer; }
+.select { display: inline-block; width: 8rem; height: calc(1.5em + .75rem + 2px); padding: .375rem 1.75rem .375rem .75rem; font-size: 1rem; font-weight: 400; line-height: 1.5; color: #495057; vertical-align: middle; background: #fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center/8px 10px;  border: 1px solid #ced4da; border-radius: .25rem; -webkit-appearance: none; -moz-appearance: none;appearance: none; margin-left: 50rem;}  
+.search{ width:20rem; float:right; }
+.input-group { width: 30rem; float: right; }
+.input-group-text { height: 100%;}
 
 @media (max-width: 576px) {
   table { font-size:0.5rem; }
@@ -310,6 +357,9 @@ a { color: #42b983; }
   .btn-danger{ font-size: 0.5rem; }
   .btn-warning{ font-size: 0.5rem; }
   .main_big_img { height: 10rem;  }
+  .search{ width:13rem; float:right; }
+  .select { margin-left: -1rem; }
+  .input-group { width: 10rem; }
 }
 </style>
 
