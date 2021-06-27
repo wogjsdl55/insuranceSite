@@ -4,11 +4,12 @@ var router = express.Router();
  // MYSQL DB 실행
  const mysql      = require('mysql');
  const connection = mysql.createConnection({
-  host     : 'localhost',
-  port     : '3306',
-  user     : 'root',
-  password : 'shwo2936',
-  database : 'nodejs'
+  host     : 'nodejs-009.cafe24.com',
+   port     : '3306',
+   user     : 'shwogjs00',
+   password : 'shwo1379@',
+   database : 'shwogjs00'
+
  });
 
  connection.connect();
