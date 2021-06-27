@@ -39,7 +39,6 @@
                       ></b-form-checkbox-group>
                     </b-form-group>
                 </b-card>
-                 <div>Selected: <strong>{{ form.checkOption }}</strong></div>
           <b-row>
             <b-col><h3 style="float: left;">작성자 : {{ userName }}</h3></b-col>
             <b-col><h3>작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
@@ -124,7 +123,6 @@ export default {
   mounted() { 
     //페이지 시작하면은 자동 함수 실행
     this.dataList();
-    console.log(this.$route.params.res.data[0].counselStatus);
 	},
   beforeCreate(){
     if(this.$route.params.res === undefined) { this.$router.go(-1) }
@@ -140,12 +138,13 @@ export default {
         notice:this.$route.params.res.data[0].notice,
         form: {
           comment:'',
+          test: [],
           counselStatus: this.$route.params.res.data[0].counselStatus,
           seq: this.$route.params.res.data[0].seq,
           subject: this.$route.params.res.data[0].subject,  
           content: this.$route.params.res.data[0].content,
           pwd: this.$route.params.res.data[0].pwd,
-          checkOption: [this.$route.params.res.data[0].checkOption],
+          checkOption: this.$route.params.res.data[0].checkOption.split(','),
         },
         replys: [],
         noticeToolbar: [
@@ -162,10 +161,10 @@ export default {
             { text: '여성', value: 'W' },
         ],
         checkOptions: [
-          { text: '보험료부담',   value: '1' },
-          { text: '보장부족',     value: '2' },
-          { text: '보장분석',     value: '3' },
-          { text: '보험금청구',   value: '4' }
+          { text: '보험료부담',   value: 1 },
+          { text: '보장부족',     value: 2 },
+          { text: '보장분석',     value: 3 },
+          { text: '보험금청구',   value: 4 }
         ],
         csStatusList: [
           { text: '상담중',       value: 0 },

@@ -5,10 +5,10 @@ var router = express.Router();
  const mysql      = require('mysql');
  const connection = mysql.createConnection({
   host     : 'nodejs-009.cafe24.com',
-   port     : '3306',
-   user     : 'shwogjs00',
-   password : 'shwo1379@',
-   database : 'shwogjs00'
+  port     : '3306',
+  user     : 'shwogjs00',
+  password : 'shwo1379@',
+  database : 'shwogjs00'
 
  });
 
@@ -37,7 +37,7 @@ router.post('/boardSubmit', function(req, res, next) {
     //admin 으로 접속
     notice = 1;
     userName = "관리자";
-    counselStatus = "4"
+    counselStatus = "3"
   }else {
     notice = 0;
     userName = req.body.userName;
