@@ -4,12 +4,11 @@ var router = express.Router();
  // MYSQL DB 실행
  const mysql      = require('mysql');
  const connection = mysql.createConnection({
-  host     : 'nodejs-009.cafe24.com',
+  host     : 'localhost',
   port     : '3306',
-  user     : 'shwogjs00',
-  password : 'shwo1379@',
-  database : 'shwogjs00'
-
+  user     : 'root',
+  password : 'shwo2936',
+  database : 'nodejs'
  });
 
  connection.connect();
@@ -44,7 +43,7 @@ router.post('/boardSubmit', function(req, res, next) {
     counselStatus = "1"
   }
   // 쿼리 날려서 저장
-  connection.query(`INSERT INTO board (userName, userBrith, userTel, subject, content, gender, checkOption, pwd, notice, counselStatus) VALUES('${userName}', '${ req.body.userBrith}', '${ req.body.userTel}', '${ req.body.subject}', '${ req.body.content}', '${ req.body.gender}', '${ req.body.checkOption}', '${ req.body.userPwd}', '${ notice }', '${ counselStatus }')`,
+  connection.query(`INSERT INTO board (userName, userBrith, userTel, subject, content, gender, checkOption, pwd, notice, counselStatus, area) VALUES('${userName}', '${ req.body.userBrith}', '${ req.body.userTel}', '${ req.body.subject}', '${ req.body.content}', '${ req.body.gender}', '${ req.body.checkOption}', '${ req.body.userPwd}', '${ notice }', '${ counselStatus }', '${ req.body.area }')`,
   (error, rows) => {
     if (error) {
       console.error(error);
@@ -80,8 +79,8 @@ router.post('/boardCheck', function(req, res, next) {
   }else {
     adminYN = 1;
   }
-  console.log(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}'`);
-  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}' `,
+  console.log(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus, area FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}'`);
+  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus, area FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}' `,
   (error, rows) => {
     console.log()
     if (error) {

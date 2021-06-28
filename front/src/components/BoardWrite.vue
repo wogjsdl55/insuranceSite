@@ -58,7 +58,11 @@
                         ></b-form-radio-group>
                        </b-form-group>
                   </b-col>
-
+                  
+                  <div class= "lineCss"></div>
+                  <b-col>
+                    <b-form-select v-model="form.area" :options="areaName" class="select"></b-form-select>
+                  </b-col>
                   <b-col>
                       <b-input-group class="mb-3">
                           <b-input-group-prepend is-text>
@@ -166,6 +170,7 @@ export default {
           checkbox:[],
           content: "",
           checkOption: [],
+          area: '서울'
         },
         customToolbar: [
           ["bold", "italic", "underline"],
@@ -182,8 +187,8 @@ export default {
           { text: '보장부족',     value: '2' },
           { text: '보장분석',     value: '3' },
           { text: '보험금청구',   value: '4' }
-        ]
-
+        ],
+        areaName: [ '서울', '경기', '인천', '강원', '부산', '경남', '대구', '경북', '대전', '충남', '충북', '광주', '전남', '전북', '울산', '제주' ]
       }
   },
   methods: {
@@ -236,22 +241,24 @@ li { display: inline-block; margin: 0 10px; }
 .card-header{ font-size: 2rem; font-weight: bold; padding-right: 88%; }
 .input-group-text{ padding: 0.5rem 0.75rem; }
 .card-text{ font-size: 1.5rem; }
-.gender { width: 39rem; height: 2.5rem; }
+.gender { width: 19rem; height: 2.5rem; }
 .message { font-size: 1rem;}
 .bv-no-focus-ring { font-size: 1.5rem; }
 .subject { font-size: 2rem; margin-top: 30px; }
 .confirm { margin-top: 8rem; margin-left: 1rem;}
 .ql-quillWrapper { stroke: rgb(34 164 234 / 95%);}
 .lineCss { display: none;}
+.select { display: inline-block; width: 17rem; height: calc(1.5em + .75rem + 2px); padding: .375rem 1.75rem .375rem .75rem; font-size: 1rem; font-weight: 400; line-height: 1.5; color: #495057; vertical-align: middle; background: #fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center/8px 10px;  border: 1px solid #ced4da; border-radius: .25rem; -webkit-appearance: none; -moz-appearance: none;appearance: none; }  
 
 @media (max-width: 576px) {
   .message { font-size: 0.5rem;}
   .card-header{ padding-right: 0; }
   .card-body { padding-top: 1rem;}
   .card-text{ font-size: 10px;}
-  .btn-group-toggle{ width: 9.5rem; }
+  .btn-group-toggle{ width: 21rem; }
   .bv-no-focus-ring { font-size: 0.7rem; }
   .subject { font-size: 1rem; margin-top: 20px; }
   .lineCss { display: block; }
+  .select { width: 21rem;  margin-top: 1rem; margin-bottom: 1rem;} 
 }
 </style>

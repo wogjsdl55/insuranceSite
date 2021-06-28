@@ -7,7 +7,7 @@
       <b-row>
           <b-container class="bv-example-row">
             <h3 v-if="this.$route.params.res.data[1] ===0 && this.notice === '0' ">
-             성별 :  {{ gender }}, 생일: {{ userBrith }}, 번호: {{ userTel }} 
+             성별 :  {{ gender }}, 생일: {{ userBrith }}, 번호: {{ userTel }} , 지역: {{ area }}
             </h3>
             
             <b-form inline @submit="onSubmit" method="post">
@@ -40,8 +40,8 @@
                     </b-form-group>
                 </b-card>
           <b-row>
-            <b-col><h3 style="float: left;">작성자 : {{ userName }}</h3></b-col>
-            <b-col><h3>작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
+            <b-col><h3 class="info" style="float: left;">작성자 : {{ userName }}</h3></b-col>
+            <b-col><h3 class="info" >작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
           </b-row>
           <b-row  v-if="this.notice === '0'">
             <vue-editor v-model="form.content" :editor-toolbar="customToolbar"  />
@@ -136,6 +136,7 @@ export default {
         gender: this.$route.params.res.data[0].gender,
         userTel:this.$route.params.res.data[0].userTel,
         notice:this.$route.params.res.data[0].notice,
+        area: this.$route.params.res.data[0].area,
         form: {
           comment:'',
           test: [],
@@ -249,6 +250,8 @@ li { display: inline-block; margin: 0 10px; }
 .subject { font-size: 2rem; margin-top: 30px; }
 .confirm { margin-top: 6rem; margin-left: 0.5rem;}
 .replycss { font-size: 2rem; font-weight: 400; }
+.info {font-size: calc(1.2rem + 0.6vw); }
+
 @media (max-width: 576px) {
   .message { font-size: 0.5rem;}
   .card-header{ padding-right: 0; }
@@ -258,5 +261,6 @@ li { display: inline-block; margin: 0 10px; }
   .bv-no-focus-ring { font-size: 0.7rem; }
   .subject { font-size: 1rem; margin-top: 20px; }
   .replycss{ font-size: 1rem; font-weight: 400;}
+  .info {font-size: calc(0.5rem + 0.6vw); }
 }
 </style>

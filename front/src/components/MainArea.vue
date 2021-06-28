@@ -4,7 +4,7 @@
         <b-row id="top">
           <topArea/>
         </b-row>
-      </b-container>
+
         <b-row>
             <b-carousel
               v-model="slide"
@@ -29,20 +29,19 @@
 
           </b-carousel>
         </b-row>
-      <b-container>
         <b-row>
             <b-card-group>
               <b-card>
                 <b-col size="sm">
                   <b-card  style="height: 120%;">
-                    <a href="/board"><b-button  size="lg" style="width:100%; height: 80%;"><b class="main_button">상담문의 하기</b></b-button></a>
+                    <b-button to="/board" size="lg" style="width:100%; height: 80%;" white ><b class="main_button">상담문의 하기</b></b-button>
                   </b-card>
                 </b-col>
               </b-card>
 
             <b-card>
               <b-card>
-                  <b-col style="padding-bottom: 1rem;"><b-img class="kakao" :src="require('../assets/main/kakao_plus_img.png')" @click="kakao"></b-img></b-col>
+                  <b-col style="padding-bottom: 0.5rem;"><b-img class="kakao" :src="require('../assets/main/kakao_plus_img.png')" @click="kakao"></b-img></b-col>
 
                   <b-col><a><b-button  variant="success" size="sm" class="success_btn" ><b class="button_q">자주묻는질문</b></b-button></a></b-col>
                 </b-card>
@@ -106,11 +105,11 @@
               </template>
               
               <template v-slot:cell(subject)="data">
-                <span v-html ="data.value" style="float:left;  font-size: 1rem;">{{ data.value }}</span>
+                <span v-html ="data.value" class="subject_tb"> {{ data.value }}</span>
               </template>
 
               <template v-slot:cell(userName)="data" >
-                <span v-if="data.value === '관리자'"> {{ data.value }}</span>
+                <span v-if="data.value === '관리자'" style="font-weight:bold" > {{ data.value }}</span>
                 <span v-if="data.value !== '관리자'"> {{ data.value.replace(/.$/, "*") }}</span>
               </template>
 
@@ -323,7 +322,7 @@ a { color: #42b983; }
 .main_tel1 { float:left; font-size:2rem; }
 .main_tel2 { font-size:1.5rem; font-weight:bold }
 .main_tel3{ display: none;}
-.btn-secondary{ background-color: #32a4c5a8; border: 0; border-radius: 20px / 25px; }
+.btn-secondary{ background-color: #32a4c5a8; border: 0; border-radius: 20px / 25px; color:white; }
 .btn-secondary:hover{ background-color: #0a47a2d1; }
 .btn-success { background-color: #8bd29196; border: 0; border-radius: 20px / 25px; }
 .btn-success:hover{ background-color: #116d1996; }
@@ -339,10 +338,11 @@ a { color: #42b983; }
 .search{ width:20rem; float:right; }
 .input-group { width: 30rem; float: right; }
 .input-group-text { height: 100%;}
+.btn-lg{padding: 3.5rem 1rem; }
+.subject_tb { float:left;  font-size: 1.2rem; }
 
 @media (max-width: 576px) {
   table { font-size:0.5rem; }
-
   .card-body { padding: 0; }
   .btn{ margin-top: 2%; }
   .main_button{ font-size: 1.5rem; }
@@ -360,6 +360,8 @@ a { color: #42b983; }
   .search{ width:13rem; float:right; }
   .select { margin-left: -1rem; }
   .input-group { width: 10rem; }
+  .btn-lg{padding: 0.5rem 1rem; }
+  .subject_tb { font-size: 0.5rem; }
 }
 </style>
 
