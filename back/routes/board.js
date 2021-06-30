@@ -4,11 +4,11 @@ var router = express.Router();
  // MYSQL DB 실행
  const mysql      = require('mysql');
  const connection = mysql.createConnection({
-  host     : 'nodejs-009.cafe24.com',
+  host     : 'localhost',
   port     : '3306',
-  user     : 'shwogjs00',
-  password : 'shwo1379@',
-  database : 'shwogjs00'
+  user     : 'root',
+  password : 'shwo2936',
+  database : 'nodejs'
 
  });
 
@@ -38,13 +38,15 @@ router.post('/boardSubmit', function(req, res, next) {
     notice = 1;
     userName = "관리자";
     counselStatus = "3"
+    subject = '<span style="color: red; font-weight: bold;"><공지></span>' + req.body.subject;
   }else {
     notice = 0;
     userName = req.body.userName;
     counselStatus = "1"
+    subject = req.body.subject;
   }
   // 쿼리 날려서 저장
-  connection.query(`INSERT INTO board (userName, userBrith, userTel, subject, content, gender, checkOption, pwd, notice, counselStatus, area) VALUES('${userName}', '${ req.body.userBrith}', '${ req.body.userTel}', '${ req.body.subject}', '${ req.body.content}', '${ req.body.gender}', '${ req.body.checkOption}', '${ req.body.userPwd}', '${ notice }', '${ counselStatus }', '${ req.body.area }')`,
+  connection.query(`INSERT INTO board (userName, userBrith, userTel, subject, content, gender, checkOption, pwd, notice, counselStatus, area) VALUES('${userName}', '${ req.body.userBrith}', '${ req.body.userTel}', '${ subject }', '${ req.body.content}', '${ req.body.gender}', '${ req.body.checkOption}', '${ req.body.userPwd}', '${ notice }', '${ counselStatus }', '${ req.body.area }')`,
   (error, rows) => {
     if (error) {
       console.error(error);

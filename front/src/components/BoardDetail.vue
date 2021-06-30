@@ -25,7 +25,7 @@
                     
                     
                      <b-form-input id="input-1" v-model="form.subject" placeholder="제목을 입력해주세요." required class="subject" v-if="this.notice === '0'" > </b-form-input>
-                     <b-form-input id="input-1" v-model="form.subject" placeholder="제목을 입력해주세요." required class="subject" v-if="this.notice === '1'" disabled > </b-form-input>
+                     <p class="subject_font" v-html="form.subject" v-if="this.notice === '1'"></p>
                 </b-card>
                 <b-card v-if="this.notice === '0'">
                     <b-form-group v-slot="{ ariaDescribedby }">
@@ -251,6 +251,7 @@ li { display: inline-block; margin: 0 10px; }
 .confirm { margin-top: 6rem; margin-left: 0.5rem;}
 .replycss { font-size: 2rem; font-weight: 400; }
 .info {font-size: calc(1.2rem + 0.6vw); }
+.subject_font { float: left; font-size: 2.5rem; }
 
 @media (max-width: 576px) {
   .message { font-size: 0.5rem;}
@@ -262,5 +263,6 @@ li { display: inline-block; margin: 0 10px; }
   .subject { font-size: 1rem; margin-top: 20px; }
   .replycss{ font-size: 1rem; font-weight: 400;}
   .info {font-size: calc(0.5rem + 0.6vw); }
+  .subject_font { font-size: 1.5rem; }
 }
 </style>
