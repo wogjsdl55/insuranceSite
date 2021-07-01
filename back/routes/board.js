@@ -10,7 +10,6 @@ var router = express.Router();
   password : 'shwo1379@',
   database : 'shwogjs00'
 
-
  });
 
  connection.connect();
@@ -63,6 +62,21 @@ router.post('/boardSubmit', function(req, res, next) {
 router.post('/boardUpdate', function(req, res, next) {
   // 쿼리 날려서 업데이트
   connection.query(`UPDATE board  SET content ='${ req.body.content}', subject='${ req.body.subject}', checkOption='${ req.body.checkOption}', counselStatus='${ req.body.counselStatus}'  WHERE seq='${ req.body.seq }'`,
+  (error, rows) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+
+    console.log('rows'+ rows);
+    res.send(rows);
+  });
+});
+
+
+router.post('/boardDelete', function(req, res, next) {
+  // 쿼리 날려서 삭제
+  connection.query(`DELETE FROM board WHERE seq = '${ req.body.seq}'`,
   (error, rows) => {
     if (error) {
       console.error(error);

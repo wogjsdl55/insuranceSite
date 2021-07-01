@@ -1,5 +1,5 @@
 <template>
-    <b-container >
+    <b-container style="zoom: 80%;">>
       <b-row id="top">
         <topArea/>
       </b-row>

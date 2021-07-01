@@ -1,5 +1,5 @@
 <template>
-    <b-container >
+    <b-container style="zoom: 80%;">
       <b-row id="top">
         <topArea/>
       </b-row>
@@ -43,16 +43,16 @@
             <b-col><h3 class="info" style="float: left;">작성자 : {{ userName }}</h3></b-col>
             <b-col><h3 class="info" >작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
           </b-row>
-          <b-row  v-if="this.notice === '0'">
+          <b-row  v-if="this.notice === '0'" class="content" >
             <vue-editor v-model="form.content" :editor-toolbar="customToolbar"  />
           </b-row>
 
-          <b-row  v-if="this.notice === '1'">
+          <b-row  v-if="this.notice === '1'" class="content">
             <vue-editor v-model="form.content" :editor-toolbar="noticeToolbar"  disabled />
           </b-row>
 
         <b-row   style="margin-top: 6rem; overflow: auto; height: 25rem;">
-          <b-card bg-variant="default" v-if="this.notice === '0'">
+          <b-card bg-variant="default" v-if="this.notice === '0'" style="background-color: lightgray;">
               <ul class="demo">
                 <li v-for="reply in replys" v-bind:key = "reply.seq" style="width: 100%;">
                   <p  v-if="reply.adminYN === '1'" style="float:left">
@@ -96,7 +96,8 @@
         <b-row v-if="this.notice === '0'">
             <b-col>
               <b-button class="confirm" type="submit" size="lg" variant="primary" >수정</b-button>
-              <b-button class="confirm" to="/" size="lg" variant="secondary">취소</b-button>
+              <b-button class="confirm" size="lg" variant="danger" @click="deleteBoard" >삭제</b-button>
+              <b-button class="confirm" to="/" size="lg" variant="secondary">취소</b-button>     
             </b-col>
           </b-row>
       </b-form>
@@ -210,6 +211,30 @@ export default {
         .catch(function (error) {
           alert(error);
         })
+      },
+      deleteBoard(){
+        event.preventDefault()
+        this.$bvModal.msgBoxConfirm('정말 삭제하시겠습니까?', {
+          okTitle: '확인',
+          cancelTitle: '취소',
+          okVariant: 'danger',
+          buttonSize: 'sm',
+          centered: true
+        })
+          .then(value => {
+
+            this.$http.post("/api/boardDelete", this.form) 
+            .then(res => {         
+              alert('삭제 되었습니다.');
+              this.$router.go();
+            })
+            .catch(function (error) {
+              alert(error);
+            })
+          })
+          .catch(err => {
+            // An error occurred
+          })
       }
   },
   computed: {
@@ -240,6 +265,7 @@ li { display: inline-block; margin: 0 10px; }
 .pagination { float:right; }
 .btn-info{ float:right; }
 .btn-primary { float:right; }
+.btn-danger { float:right; }
 .btn-secondary { float:right; }
 .card-header{ font-size: 2rem; font-weight: bold; padding-right: 88%; }
 .input-group-text{ padding: 0.5rem 0.75rem; }
@@ -249,9 +275,10 @@ li { display: inline-block; margin: 0 10px; }
 .bv-no-focus-ring { font-size: 1.5rem; }
 .subject { font-size: 2rem; margin-top: 30px; }
 .confirm { margin-top: 6rem; margin-left: 0.5rem;}
-.replycss { font-size: 2rem; font-weight: 400; }
+.replycss { font-size: 1.2rem; font-weight: 400; }
 .info {font-size: calc(1.2rem + 0.6vw); }
 .subject_font { float: left; font-size: 2.5rem; }
+.content { height: 50rem; overflow: scroll; }
 
 @media (max-width: 576px) {
   .message { font-size: 0.5rem;}
@@ -264,5 +291,6 @@ li { display: inline-block; margin: 0 10px; }
   .replycss{ font-size: 1rem; font-weight: 400;}
   .info {font-size: calc(0.5rem + 0.6vw); }
   .subject_font { font-size: 1.5rem; }
+  .content { height: 30rem; overflow: scroll; }
 }
 </style>
