@@ -9,9 +9,9 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-            <b-nav-item class="menu" href="/intro">보험케어 소개</b-nav-item >
-            <b-nav-item class="menu" href="/tip">보험TIP</b-nav-item >
-            <b-nav-item class="menu" href="/search">내보험 다찾아줌</b-nav-item >
+            <b-nav-item class="menu" to="/intro">보험케어 소개</b-nav-item >
+            <b-nav-item class="menu" to="/tip">보험TIP</b-nav-item >
+            <b-nav-item class="menu" to="/search">내보험 다찾아줌</b-nav-item >
         </b-navbar-nav>
       </b-collapse>
   </b-navbar>
