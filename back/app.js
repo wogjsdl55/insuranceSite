@@ -9,10 +9,13 @@ var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/board');
 
 var multer = require('multer')
+var path = __dirname;
+console.log("path="+ path);
+
 var upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, '/back/public/static/img/');
+      cb(null, './back/public/static/img/');
     },
     filename: function (req, file, cb) {
       cb(null,  new Date().valueOf() + path.extname(file.originalname));
