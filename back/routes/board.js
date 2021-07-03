@@ -1,17 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var multer = require('multer')
-var upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, '/');
-    },
-    filename: function (req, file, cb) {
-      cb(null, new Date().valueOf() + file.originalname);
-    }
-  }),
-});
-
 
  // MYSQL DB 실행
  const mysql      = require('mysql');
@@ -161,13 +149,5 @@ router.post('/boardReply', function(req, res, next) {
     res.send(rows);
   });
 });
-
-
-// 이미지 업로드
-router.post('/upload', upload.single('image'), (req, res) => {
-  console.log(req.file);
-  upload.single(req.file);
-  res.send(req.file.filename);
-})
 
 module.exports = router;

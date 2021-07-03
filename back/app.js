@@ -8,6 +8,18 @@ var port = 3000
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/board');
 
+var multer = require('multer')
+var upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/static/img');
+    },
+    filename: function (req, file, cb) {
+      cb(null,  new Date().valueOf() + path.extname(file.originalname));
+    }
+  }),
+});
+
 // 카페 24 웹 호스트 포트 설정 
 var app = express();
 
@@ -29,6 +41,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
+// 이미지 업로드
+app.post('/api/upload', upload.single('image'), (req, res) => {
+  console.log(req.file);
+  res.send(req.file.filename);
+})
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -44,5 +63,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   console.log(err);
 });
+
 
 module.exports = app;
