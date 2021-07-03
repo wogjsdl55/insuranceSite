@@ -10,6 +10,8 @@ var router = express.Router();
   password : 'shwo1379@',
   database : 'shwogjs00'
 
+
+
  });
 
  connection.connect();
@@ -90,15 +92,17 @@ router.post('/boardDelete', function(req, res, next) {
 
 router.post('/boardCheck', function(req, res, next) {
   // 쿼리 날려서 가져오기
-  console.log(req.body.pwd);
+  
   if( req.body.pwd ==="admin") {
     //admin 으로 접속
-    adminYN = 0;
-  }else {
+    pwdAdmin = 0;
     adminYN = 1;
+  }else {
+    pwdAdmin = 1;
+    adminYN = 0;
   }
-  console.log(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus, area FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}'`);
-  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus, area FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ adminYN }') AND seq='${req.body.seq}' `,
+  console.log(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus, area FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ pwdAdmin }') AND seq='${req.body.seq}'`);
+  connection.query(`SELECT seq, subject, userName, userBrith, userTel, regdate, content, gender, checkOption, adminYN, pwd, notice, counselStatus, area FROM board WHERE (pwd='${req.body.pwd}' OR adminYN='${ pwdAdmin }') AND seq='${req.body.seq}' `,
   (error, rows) => {
     console.log()
     if (error) {
@@ -132,12 +136,12 @@ router.post('/boardreplyList', function(req, res, next) {
 
 
 router.post('/boardReply', function(req, res, next) {
-  if( req.body.adminYN ===0) {
+  if( req.body.adminYN === '1') {
     //admin 으로 접속
-    adminYN = 0;
+    adminYN = 1;
     userName = "관리자";
   }else {
-    adminYN = 1;
+    adminYN = 0;
     userName = req.body.userName;
   }
   // 댓글등록 insert

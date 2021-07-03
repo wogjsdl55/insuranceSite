@@ -6,13 +6,13 @@
       
       <b-row>
           <b-container class="bv-example-row">
-            <h3 v-if="this.$route.params.res.data[1] ===0 && this.notice === '0' ">
+            <h3 v-if="this.admin === '1' && this.notice === '0' ">
              성별 :  {{ gender }}, 생일: {{ userBrith }}, 번호: {{ userTel }} , 지역: {{ area }}
             </h3>
             
             <b-form inline @submit="onSubmit" method="post">
                   <b-card>
-                     <b-form-group v-slot="{ ariaDescribedby }" v-if="this.$route.params.res.data[1] ===0 && this.notice === '0'">
+                     <b-form-group v-slot="{ ariaDescribedby }" v-if="this.admin === '0' && this.notice === '0'">
                       <b-form-radio-group
                         id="radio-group-1"
                         v-model="form.counselStatus"
@@ -55,13 +55,13 @@
           <b-card bg-variant="default" v-if="this.notice === '0'" style="background-color: lightgray;">
               <ul class="demo">
                 <li v-for="reply in replys" v-bind:key = "reply.seq" style="width: 100%;">
-                  <p  v-if="reply.adminYN === '1'" style="float:left">
+                  <p  v-if="reply.adminYN === '0'" style="float:left">
                       <b-button variant="light" disable class="replycss">
                           {{ reply.comment }}
                       </b-button>
                       {{ $moment(data.value).format('A HH:mm') }}
                   </p>
-                  <p  v-if="reply.adminYN === '0'" style="float:right">
+                  <p  v-if="reply.adminYN === '1'" style="float:right">
                       {{ $moment(data.value).format('A HH:mm') }}
                       <b-button variant="success" disable class="replycss" >
                         {{ reply.comment }}
@@ -125,28 +125,44 @@ export default {
     //페이지 시작하면은 자동 함수 실행
     this.dataList();
 	},
-  beforeCreate(){
-    if(this.$route.params.res === undefined) { this.$router.go(-1) }
-  },
   data() {
+
+      if(this.$route.params.res != undefined) {
+        sessionStorage.setItem("userName", this.$route.params.res.data[0].userName);
+        sessionStorage.setItem("adminYN", this.$route.params.res.data[0].adminYN);
+        sessionStorage.setItem("regdate", this.$route.params.res.data[0].regdate);
+        sessionStorage.setItem("userBrith", this.$route.params.res.data[0].userBrith);
+        sessionStorage.setItem("gender", this.$route.params.res.data[0].gender);
+        sessionStorage.setItem("userTel", this.$route.params.res.data[0].userTel);
+        sessionStorage.setItem("notice", this.$route.params.res.data[0].notice);
+        sessionStorage.setItem("area", this.$route.params.res.data[0].area);
+        sessionStorage.setItem("counselStatus", this.$route.params.res.data[0].counselStatus);
+        sessionStorage.setItem("seq", this.$route.params.res.data[0].seq);
+        sessionStorage.setItem("subject", this.$route.params.res.data[0].subject);
+        sessionStorage.setItem("content", this.$route.params.res.data[0].content);
+        sessionStorage.setItem("checkOption",  this.$route.params.res.data[0].checkOption);
+        sessionStorage.setItem("admin",  this.$route.params.res.data[1]);
+      }
+
       return {
         data: [],
-        userName: this.$route.params.res.data[0].userName,
-        regdate: this.$route.params.res.data[0].regdate,
-        userBrith: this.$route.params.res.data[0].userBrith,
-        gender: this.$route.params.res.data[0].gender,
-        userTel:this.$route.params.res.data[0].userTel,
-        notice:this.$route.params.res.data[0].notice,
-        area: this.$route.params.res.data[0].area,
+        userName: sessionStorage.getItem("userName"),
+        adminYN: sessionStorage.getItem("adminYN"),
+        regdate: sessionStorage.getItem("regdate"),
+        userBrith: sessionStorage.getItem("userBrith"),
+        gender: sessionStorage.getItem("gender"),
+        userTel: sessionStorage.getItem("userTel"),
+        notice: sessionStorage.getItem("notice"),
+        area: sessionStorage.getItem("area"),
+        admin: sessionStorage.getItem("admin"),
         form: {
           comment:'',
-          test: [],
-          counselStatus: this.$route.params.res.data[0].counselStatus,
-          seq: this.$route.params.res.data[0].seq,
-          subject: this.$route.params.res.data[0].subject,  
-          content: this.$route.params.res.data[0].content,
-          pwd: this.$route.params.res.data[0].pwd,
-          checkOption: this.$route.params.res.data[0].checkOption.split(','),
+          pwd: '',
+          counselStatus: sessionStorage.getItem("counselStatus"),
+          seq: sessionStorage.getItem("seq"),
+          subject: sessionStorage.getItem("subject"),
+          content: sessionStorage.getItem("content"),
+          checkOption: sessionStorage.getItem("checkOption").split(','),
         },
         replys: [],
         noticeToolbar: [
@@ -201,8 +217,8 @@ export default {
       onReplySubmit() {
         event.preventDefault()
    
-        this.data = { "comment": this.form.comment, "seq": this.form.seq, "userName": this.form.userName, "adminYN" :this.$route.params.res.data[1] }
-
+        this.data = { "comment": this.form.comment, "seq": this.form.seq, "userName": this.userName, "adminYN" :this.admin }
+      console.log(this.data);
         this.$http.post("/api/boardReply", this.data) 
         .then(res => {         
           alert('댓글등록이 완료되었습니다.');
@@ -246,7 +262,7 @@ export default {
       },
       validationTel(){
         return this.userTel.length > 10 && this.userTel.length < 15 ? true : false
-      }
+      },
     },
 }
 </script>
