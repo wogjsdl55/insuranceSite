@@ -1,17 +1,26 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer')
+var upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, '../front/src/assets/upload/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, new Date().valueOf() + file.originalname);
+    }
+  }),
+});
+
 
  // MYSQL DB 실행
  const mysql      = require('mysql');
  const connection = mysql.createConnection({
-  host     : 'nodejs-009.cafe24.com',
+  host     : 'localhost',
   port     : '3306',
-  user     : 'shwogjs00',
-  password : 'shwo1379@',
-  database : 'shwogjs00'
-
-
-
+  user     : 'root',
+  password : 'shwo2936',
+  database : 'nodejs'
  });
 
  connection.connect();
@@ -54,8 +63,6 @@ router.post('/boardSubmit', function(req, res, next) {
       console.error(error);
       res.status(500).send('Internal Server Error');
     }
-
-    console.log('rows'+ rows);
     res.send(rows);
   });
 });
@@ -63,14 +70,13 @@ router.post('/boardSubmit', function(req, res, next) {
 
 router.post('/boardUpdate', function(req, res, next) {
   // 쿼리 날려서 업데이트
+  console.log(req.body.content);
   connection.query(`UPDATE board  SET content ='${ req.body.content}', subject='${ req.body.subject}', checkOption='${ req.body.checkOption}', counselStatus='${ req.body.counselStatus}'  WHERE seq='${ req.body.seq }'`,
   (error, rows) => {
     if (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
     }
-
-    console.log('rows'+ rows);
     res.send(rows);
   });
 });
@@ -154,5 +160,13 @@ router.post('/boardReply', function(req, res, next) {
     res.send(rows);
   });
 });
+
+
+// 이미지 업로드
+router.post('/upload', upload.single('image'), (req, res) => {
+  console.log(req.file);
+  upload.single(req.file);
+  res.send(req.file.filename);
+})
 
 module.exports = router;

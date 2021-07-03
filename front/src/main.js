@@ -7,7 +7,6 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import Vue2Editor from "vue2-editor";
 import VueKakaoSdk from 'vue-kakao-sdk'
 
-
 Vue.config.productionTip = false
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)

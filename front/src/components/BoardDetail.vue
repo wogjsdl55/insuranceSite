@@ -44,7 +44,7 @@
             <b-col><h3 class="info" >작성일 : {{  $moment(regdate).format('YYYY-MM-DD HH:mm') }}</h3></b-col>
           </b-row>
           <b-row  v-if="this.notice === '0'" class="content" >
-            <vue-editor v-model="form.content" :editor-toolbar="customToolbar"  />
+            <vue-editor v-model="form.content" :editor-toolbar="customToolbar" useCustomImageHandler  @image-added="handleImageAdded" />
           </b-row>
 
           <b-row  v-if="this.notice === '1'" class="content">
@@ -59,10 +59,10 @@
                       <b-button variant="light" disable class="replycss">
                           {{ reply.comment }}
                       </b-button>
-                      {{ $moment(data.value).format('A HH:mm') }}
+                      {{ $moment(reply.regdate).format('A HH:mm') }}
                   </p>
                   <p  v-if="reply.adminYN === '1'" style="float:right">
-                      {{ $moment(data.value).format('A HH:mm') }}
+                      {{ $moment(reply.regdate).format('A HH:mm') }}
                       <b-button variant="success" disable class="replycss" >
                         {{ reply.comment }}
                       </b-button>
@@ -208,7 +208,7 @@ export default {
         this.$http.post("/api/boardUpdate", this.form) 
         .then(res => {         
           alert('수정 되었습니다.');
-          this.$router.go();
+          this.$router.go(-1);
         })
         .catch(function (error) {
           alert(error);
@@ -218,7 +218,6 @@ export default {
         event.preventDefault()
    
         this.data = { "comment": this.form.comment, "seq": this.form.seq, "userName": this.userName, "adminYN" :this.admin }
-      console.log(this.data);
         this.$http.post("/api/boardReply", this.data) 
         .then(res => {         
           alert('댓글등록이 완료되었습니다.');
@@ -251,6 +250,23 @@ export default {
           .catch(err => {
             // An error occurred
           })
+      },
+      handleImageAdded: function(file, Editor, cursorLocation, resetUploader) {
+
+      var formData = new FormData();      
+      formData.append("image", file);
+
+
+      this.$http.post("/api/upload", formData) 
+        .then(result => {
+          
+          var fileName = result.data; // Get url from response
+          Editor.insertEmbed(cursorLocation, "image", '../assets/upload/' + fileName);
+          resetUploader();
+        })
+        .catch(err => {
+          alert('파일 업로드에 실패했습니다.');
+        });
       }
   },
   computed: {
