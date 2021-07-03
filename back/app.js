@@ -12,7 +12,7 @@ var multer = require('multer')
 var upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'public/static/img');
+      cb(null, './back/public/static/img/');
     },
     filename: function (req, file, cb) {
       cb(null,  new Date().valueOf() + path.extname(file.originalname));
@@ -43,8 +43,8 @@ app.use('/api', apiRouter);
 
 // 이미지 업로드
 app.post('/api/upload', upload.single('image'), (req, res) => {
-  console.log(req.file);
   res.send(req.file.filename);
+  res.end();
 })
 
 

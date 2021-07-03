@@ -261,7 +261,8 @@ export default {
         .then(result => {
           
           var fileName = result.data; // Get url from response
-          Editor.insertEmbed(cursorLocation, "image", '/public/static/img' + fileName);
+          console.log("file1="+ result.data);
+          Editor.insertEmbed(cursorLocation, "image", '/static/img/' + fileName);
           resetUploader();
         })
         .catch(err => {
