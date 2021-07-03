@@ -8,10 +8,8 @@ var port = 3000
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/board');
 
+console.log("path="+ __dirname);
 var multer = require('multer')
-var path = __dirname;
-console.log("path="+ path);
-
 var upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
