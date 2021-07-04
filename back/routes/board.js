@@ -14,6 +14,7 @@ var router = express.Router();
 
  connection.connect();
 
+
  router.get('/boardList', function(req, res, next) {
   // 쿼리 날려서 가져오기
   connection.query(`SELECT seq, subject, userName, regdate, counselStatus, notice FROM board  ORDER BY notice DESC, regdate DESC`,
