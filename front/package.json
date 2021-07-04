@@ -16,6 +16,7 @@
     "buffer": "^6.0.3",
     "google-fonts-webpack-plugin": "^0.4.4",
     "vue": "^2.6.12",
+    "vue-carousel": "^0.18.0",
     "vue-kakao-sdk": "0.0.4",
     "vue-meta": "^2.4.0",
     "vue-moment": "^4.1.0",

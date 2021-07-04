@@ -6,28 +6,17 @@
         </b-row>
 
         <b-row>
-            <b-carousel
-              v-model="slide"
-              :interval="50000"    
-              indicators
-              img-width="1024"
-              img-height="480"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
-              style="text-shadow: 1px 1px 2px #333;"
-            >
-              <!-- Slides with image only -->
-              <b-carousel-slide
-                img-src="https://picsum.photos/1024/480/?image=52"
-                class="main_big_img"
-              ></b-carousel-slide>
-
-          <!-- Slides with custom text -->
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-            <h1>Hello world!</h1>
-          </b-carousel-slide>
-
-          </b-carousel>
+             <carousel class="carousel" :per-page="1" :mouse-drag="false" loop autoplay :autoplayTimeout = "5000" >
+              <slide>
+                <img src="https://picsum.photos/1024/480/?image=54" style="width: 100%;">
+              </slide>
+              <slide>
+                <img src="https://picsum.photos/1024/480/?image=58" style="width: 100%;">
+              </slide>
+              <slide>
+                <img src="https://picsum.photos/1024/480/?image=54" style="width: 100%;">
+              </slide>
+            </carousel>
         </b-row>
         <b-row>
             <b-card-group>
@@ -340,8 +329,7 @@ a { color: #42b983; }
 .input-group-text { height: 100%;}
 .btn-lg{padding: 3.5rem 1rem; }
 .subject_tb { float:left;  font-size: 1.2rem; }
-.carousel-indicators { position: absolute; right: 0; bottom: 0; left: 0; z-index: 15; display: flex; justify-content: center; padding-left: 0; margin-right: 15%; margin-left: 15%; list-style: none; box-sizing: content-box; }
-/*#__BVID__13___BV_indicator_1_ { box-sizing: content-box; flex: 0 1 auto; width: 30px; height: 3px; margin-right: 3px; margin-left: 3px; text-indent: -999px; cursor: pointer; background-color: #fff; background-clip: padding-box; border-top: 10px solid transparent; border-bottom: 10px solid transparent; opacity: .5; transition: opacity .6s ease;  }*/
+div.VueCarousel-pagination {   position: absolute;  margin-top: 33rem; }
 
 @media (max-width: 576px) {
   table { font-size:0.5rem; }
