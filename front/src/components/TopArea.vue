@@ -10,7 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
             <b-nav-item class="menu" to="/intro">보험케어 소개</b-nav-item >
-            <b-nav-item class="menu" to="/tip">보험TIP</b-nav-item >
+            <b-nav-item class="menu" @click="tip" >보험TIP</b-nav-item >
             <b-nav-item class="menu" to="/search">내보험 다찾아줌</b-nav-item >
         </b-navbar-nav>
       </b-collapse>
@@ -26,7 +26,11 @@
 <script>
 export default {
   name: 'top_area',
-  metaInfo: { title: '보험케어' },
+  methods: {
+    tip(){
+      alert("현재 페이지 준비중입니다.");
+    }
+  }
 }
 </script>
 

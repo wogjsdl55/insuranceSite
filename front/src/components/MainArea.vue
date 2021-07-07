@@ -8,13 +8,13 @@
         <b-row>
              <carousel class="carousel" :per-page="1" :mouse-drag="false" loop autoplay :autoplayTimeout = "5000" >
               <slide>
-                <img src="https://picsum.photos/1024/480/?image=54" style="width: 100%;">
+                <b-img :src="require('../assets/main/main_img.png')"  />
               </slide>
               <slide>
-                <img src="https://picsum.photos/1024/480/?image=58" style="width: 100%;">
+                <b-img :src="require('../assets/main/main_img2.png')"  />
               </slide>
               <slide>
-                <img src="https://picsum.photos/1024/480/?image=54" style="width: 100%;">
+                <b-img :src="require('../assets/main/main_img3.png')"  />
               </slide>
             </carousel>
         </b-row>

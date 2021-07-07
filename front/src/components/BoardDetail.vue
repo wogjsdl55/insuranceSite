@@ -241,7 +241,7 @@ export default {
             this.$http.post("/api/boardDelete", this.form) 
             .then(res => {         
               alert('삭제 되었습니다.');
-              this.$router.go();
+              this.$router.go(-1);
             })
             .catch(function (error) {
               alert(error);
