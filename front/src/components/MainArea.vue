@@ -1,5 +1,5 @@
 <template>
-    <div style="zoom: 80%;">
+    <div style="zoom: 90%;">
       <b-container>
         <b-row id="top">
           <topArea/>
@@ -8,13 +8,13 @@
         <b-row>
              <carousel class="carousel" :per-page="1" :mouse-drag="false" loop autoplay :autoplayTimeout = "5000" >
               <slide>
-                <b-img :src="require('../assets/main/main_img.png')"  />
+                <b-img :src="require('../assets/main/main_img.png')"  style="width: 100%;" />
               </slide>
               <slide>
-                <b-img :src="require('../assets/main/main_img2.png')"  />
+                <b-img :src="require('../assets/main/main_img2.png')" style="width: 100%;"  />
               </slide>
               <slide>
-                <b-img :src="require('../assets/main/main_img3.png')"  />
+                <b-img :src="require('../assets/main/main_img3.png')"  style="width: 100%;" />
               </slide>
             </carousel>
         </b-row>
@@ -32,7 +32,7 @@
               <b-card>
                   <b-col style="padding-bottom: 0.5rem;"><b-img class="kakao" :src="require('../assets/main/kakao_plus_img.png')" @click="kakao"></b-img></b-col>
 
-                  <b-col><a><b-button  variant="success" size="sm" class="success_btn" ><b class="button_q">자주묻는질문</b></b-button></a></b-col>
+                  <b-col><a><b-button  variant="success" size="sm" class="success_btn" ><b class="button_q">내보험 설명서</b></b-button></a></b-col>
                 </b-card>
             </b-card>
 
@@ -40,13 +40,13 @@
                   <b-col>
                     <b-card-text>
                         <span class="main_tel1" style="padding-top: 1rem; font-weight: bold;" >Kim & Lim 전화번호</span><br>
-                        <span class="main_tel3" >010-5427-3793 </span>
-                        <span class="main_tel3" >, 010-6744-3789 </span>
+                        <span class="main_tel3" >임동우 010-5427-3793 <br></span>
+                        <span class="main_tel3" >김수경 010-6744-3789 </span>
                         <br>
                         <br>
                         <br>
-                        <span class="main_tel2" >010-5427-3793 </span><br>
-                        <span class="main_tel2" >010-6744-3789 </span>
+                        <span class="main_tel2" >임동우 010-5427-3793 </span><br>
+                        <span class="main_tel2" >김수경 010-6744-3789 </span>
                     </b-card-text>
                   </b-col>
               </b-card>
@@ -309,7 +309,7 @@ a { color: #42b983; }
 .btn-info{ float:right; }
 .main_button{ font-size: 2.5rem; font-family: arial; }
 .main_tel1 { float:left; font-size:2rem; }
-.main_tel2 { font-size:1.5rem; font-weight:bold }
+.main_tel2 { font-size:1.7rem; font-weight:bold }
 .main_tel3{ display: none;}
 .btn-secondary{ background-color: #32a4c5a8; border: 0; border-radius: 20px / 25px; color:white; }
 .btn-secondary:hover{ background-color: #0a47a2d1; }
@@ -329,7 +329,7 @@ a { color: #42b983; }
 .input-group-text { height: 100%;}
 .btn-lg{padding: 3.5rem 1rem; }
 .subject_tb { float:left;  font-size: 1.2rem; }
-div.VueCarousel-pagination {   position: absolute;  margin-top: 33rem; }
+div.VueCarousel-pagination {   position: absolute;  margin-top: 25rem; }
 
 @media (max-width: 576px) {
   table { font-size:0.5rem; }

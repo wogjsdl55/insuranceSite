@@ -10,7 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
             <b-nav-item class="menu" to="/intro">보험케어 소개</b-nav-item >
-            <b-nav-item class="menu" @click="tip" >보험TIP</b-nav-item >
+            <b-nav-item class="menu" @click="tip" >내보험 설명서</b-nav-item >
             <b-nav-item class="menu" to="/search">내보험 다찾아줌</b-nav-item >
         </b-navbar-nav>
       </b-collapse>
@@ -36,7 +36,7 @@ export default {
 
 <style>
 .menu { font-size: 1.3rem; font-weight: bold; font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif; }
-.navbar-collapse{ padding-left: 33rem; padding-top: 9.5rem; }
+.navbar-collapse{ padding-left: 29rem; padding-top: 9.5rem; }
 .main_img{ padding-top: 2.5rem; }
 .navbar-light .navbar-nav .nav-link:hover{  color: #0dcaf0; }
 
