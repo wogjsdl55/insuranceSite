@@ -6,7 +6,7 @@
         </b-row>
 
         <b-row>
-             <carousel class="carousel" :per-page="1" :mouse-drag="false" loop autoplay :autoplayTimeout = "5000" >
+             <carousel class="carousel" :per-page="1" :mouse-drag="false" loop autoplay :autoplayTimeout = "10000" >
               <slide>
                 <b-img :src="require('../assets/main/main_img.png')"  style="width: 100%;" />
               </slide>
