@@ -23,9 +23,20 @@
               <b-card>
                 <b-col size="sm">
                   <b-card  style="height: 120%;">
-                    <b-button to="/board" size="lg" style="width:100%; height: 80%;" white ><b class="main_button">상담문의 하기</b></b-button>
+                    <b-button size="lg" style="width:100%; height: 80%;" white  v-b-modal.modal-multi-1><b class="main_button">상담문의 하기</b></b-button>
                   </b-card>
                 </b-col>
+
+                  <b-modal id="modal-multi-1" size="md" title="상담문의" centered ok-only okTitle='취소'  buttonSize= 'lg' footerClass= 'p-2'>
+                    <b-button style="height: 5rem; float: left;" v-b-modal.modal-multi-2>전화 상담문의(연락처만 작성)</b-button>
+                    <b-button style="height: 5rem; float: right; padding-top: 1.8rem;" to="/board" >게시판 상담문의(글 작성)</b-button>
+                  </b-modal>
+
+                  <b-modal id="modal-multi-2" title="전화 상담문의" ok-only centered>
+                    <p class="my-2">Second Modal</p>
+                    <b-button v-b-modal.modal-multi-3 size="md">Open Third Modal</b-button>
+                  </b-modal>
+
               </b-card>
 
             <b-card>

@@ -103,7 +103,7 @@
                   </b-col>
                 
                    <b-card-text align="left" >* 이름은 게시판에 그대로 노출되지 않습니다. 예) 임동우 => 임*우</b-card-text>
-                   <b-card-text align="left" style="color: red;">* 보험상담 특직상 전화번호는 꼭 틀리지 않게 부탁드립니다.</b-card-text>
+                   <b-card-text align="left" style="color: red;">* 보험상담 특징상 전화번호는 꼭 틀리지 않게 부탁드립니다.</b-card-text>
                 </b-row>
 
                       <b-form-input
@@ -193,16 +193,27 @@ export default {
   },
   methods: {
      onSubmit() {
-        event.preventDefault()
-        this.$http.post("/api/boardSubmit", this.form) 
-        .then(res => {         
-          alert('상담신청이 완료되었습니다.');
-          this.$router.push('/');
-        })
-        .catch(function (error) {
-          console.log(error);
-          alert(error);
-        })
+       event.preventDefault()
+       
+       if(this.validationBrith == false){
+         alert("생년월일을 작성해주시기 바랍니다.");
+         return true;
+       }
+       else if(this.validationTel == false){
+         alert("휴대폰 번호 확인바랍니다.");
+         return true;
+       }
+       else {   
+          this.$http.post("/api/boardSubmit", this.form) 
+          .then(res => {         
+            alert('상담신청이 완료되었습니다.');
+            this.$router.push('/');
+          })
+          .catch(function (error) {
+            console.log(error);
+            alert(error);
+          })
+        }
       }
   },
 
@@ -259,6 +270,6 @@ li { display: inline-block; margin: 0 10px; }
   .bv-no-focus-ring { font-size: 0.7rem; }
   .subject { font-size: 1rem; margin-top: 20px; }
   .lineCss { display: block; }
-  .select { width: 21rem;  margin-top: 1rem; margin-bottom: 1rem;} 
+  .select { width: 22rem;  margin-top: 1rem; margin-bottom: 1rem;} 
 }
 </style>
