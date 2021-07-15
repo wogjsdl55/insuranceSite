@@ -3,10 +3,14 @@
     ["env", {
       "modules": false,
       "targets": {
-        "browsers": ["> 1%", "last 2 versions", "Explorer >= 10"]
+        "browsers": ["Chrome >= 49",
+          "Firefox >= 45",
+          "Safari >= 10",
+          "Edge >= 13",
+          "iOS >= 10",
+          "Electron >= 0.36"]
       }
-    }],
-    "stage-2"
+    }]
   ],
   "plugins": ["transform-vue-jsx", "transform-runtime"]
 }

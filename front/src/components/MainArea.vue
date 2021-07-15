@@ -27,14 +27,72 @@
                   </b-card>
                 </b-col>
 
-                  <b-modal id="modal-multi-1" size="md" title="상담문의" centered ok-only okTitle='취소'  buttonSize= 'lg' footerClass= 'p-2'>
+                  <b-modal id="modal-multi-1" size="md" title="상담문의" centered ok-only okTitle='취소' no-stacking buttonSize= 'lg' footerClass= 'p-2'>
                     <b-button style="height: 5rem; float: left;" v-b-modal.modal-multi-2>전화 상담문의(연락처만 작성)</b-button>
                     <b-button style="height: 5rem; float: right; padding-top: 1.8rem;" to="/board" >게시판 상담문의(글 작성)</b-button>
                   </b-modal>
 
-                  <b-modal id="modal-multi-2" title="전화 상담문의" ok-only centered>
-                    <p class="my-2">Second Modal</p>
-                    <b-button v-b-modal.modal-multi-3 size="md">Open Third Modal</b-button>
+                  <b-modal id="modal-multi-2" title="전화 상담문의" okTitle='제출' ok-only centered @ok="Ok">
+                    <b-form inline  ref="form" @submit.stop.prevent="Submit" method="post">
+                      <b-row>
+                          <b-col>
+                              <b-input-group class="mb-3">
+                                <b-input-group-prepend is-text>
+                                  <b-icon icon="person-fill" ></b-icon>
+                                </b-input-group-prepend>
+                                <b-form-input 
+                                    v-model="form.userName"
+                                    id="inline-form-input-name"
+                                    :state="validationName"
+                                    class="mb-2 mr-sm-8 mb-sm-0"
+                                    placeholder="이름"
+                                    required
+                                >
+                                </b-form-input>
+                                <b-form-invalid-feedback :state="validationName" class="message">
+                                  이름을 작성해주시기 바랍니다
+                                </b-form-invalid-feedback>
+                              </b-input-group>
+                          </b-col>
+                      </b-row>
+                      <b-row>
+                           <b-col>
+                            <b-input-group class="mb-3">
+                                <b-input-group-prepend is-text>
+                                  <b-icon icon="telephone-fill" ></b-icon>
+                                </b-input-group-prepend>
+                                <b-form-input 
+                                    v-model="form.userTel"
+                                    id="inline-form-input-name"
+                                    :state="validationTel"
+                                    class="mb-2 mr-sm-8 mb-sm-0"
+                                    placeholder="010-0000-0000"
+                                    required
+                                >
+                                </b-form-input>
+                                <b-form-invalid-feedback :state="validationTel" class="message">
+                                  휴대폰 번호 확인바랍니다
+                                </b-form-invalid-feedback>
+                              </b-input-group>
+                        </b-col>
+                      </b-row>
+
+                      <b-row>
+                          <b-col>
+                            <b-form-group v-slot="{ ariaDescribedby }">
+                              <b-form-checkbox-group
+                                id="checkbox-group-1"
+                                v-model="form.checkOption"
+                                :options="checkOptions"
+                                :aria-describedby="ariaDescribedby"
+                                name="flavour-1"
+                                plain
+                              ></b-form-checkbox-group>
+                            </b-form-group>
+                            <b-form-select v-model="form.area" :options="areaName" class="select" style="margin-left: 0rem; float:right;"></b-form-select>
+                          </b-col>
+                      </b-row>
+                    </b-form>
                   </b-modal>
 
               </b-card>
@@ -189,6 +247,18 @@ export default {
 	},
   data() {
     return {
+       form: {
+        userName: '',
+        userPwd: '',
+        userBrith: '',
+        gender: 'M',
+        userTel:'',
+        subject: '',
+        checkbox:[],
+        content: "",
+        checkOption: [],
+        area: '서울'
+      },
       pwd:'',
       slide: 0,
       sliding: null,
@@ -208,6 +278,13 @@ export default {
       search: '',
       filter: null,
       filterOn: [],
+      checkOptions: [
+          { text: '보험료부담',   value: '1' },
+          { text: '보장부족',     value: '2' },
+          { text: '보장분석',     value: '3' },
+          { text: '보험금청구',   value: '4' }
+        ],
+      areaName: [ '서울', '경기', '인천', '강원', '부산', '경남', '대구', '경북', '대전', '충남', '충북', '광주', '전남', '전북', '울산', '제주' ]
     }
   },
 
@@ -292,12 +369,50 @@ export default {
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      Ok(bvModalEvt) {
+        // Prevent modal from closing
+        bvModalEvt.preventDefault()
+        // Trigger submit handler
+        this.Submit()
+      },
+      
+      Submit() {
+       event.preventDefault()
+       
+       if(this.validationTel == false){
+         alert("휴대폰 번호 확인바랍니다.");
+         return true;
+       }
+       else {   
+          this.form.subject = "전화상담 문의입니다.";
+          this.$http.post("/api/boardSubmit", this.form) 
+          .then(res => {         
+            alert('상담신청이 완료되었습니다.');
+            this.$nextTick(() => {
+              this.$bvModal.hide('modal-multi-2')
+            })
+          })
+          .catch(function (error) {
+            console.log(error);
+            alert(error);
+          })
+        }
       }
 
   },
   computed: {
       rows() {
         return this.items.length
+      },
+      validationName() {
+        return this.form.userName.length > 1 && this.form.userName.length < 10 ? true : false
+      },
+      validationBrith(){
+        return this.form.userBrith.length > 4 && this.form.userBrith.length < 10 ? true : false
+      },
+      validationTel(){
+        return this.form.userTel.length > 10 && this.form.userTel.length < 15 ? true : false
       }
   },
 
@@ -336,7 +451,7 @@ a { color: #42b983; }
 .kakao:hover { cursor: pointer; }
 .select { display: inline-block; width: 8rem; height: calc(1.5em + .75rem + 2px); padding: .375rem 1.75rem .375rem .75rem; font-size: 1rem; font-weight: 400; line-height: 1.5; color: #495057; vertical-align: middle; background: #fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center/8px 10px;  border: 1px solid #ced4da; border-radius: .25rem; -webkit-appearance: none; -moz-appearance: none;appearance: none; margin-left: 50rem;}  
 .search{ width:20rem; float:right; }
-.input-group { width: 30rem; float: right; }
+.input-group { width: 30rem; float: right; padding: 0.5rem;}
 .input-group-text { height: 100%;}
 .btn-lg{padding: 3.5rem 1rem; }
 .subject_tb { float:left;  font-size: 1.2rem; }
@@ -360,7 +475,7 @@ div.VueCarousel-pagination {   position: absolute;  margin-top: 25rem; }
   .main_big_img { height: 10rem;  }
   .search{ width:13rem; float:right; }
   .select { margin-left: -1rem; }
-  .input-group { width: 10rem; }
+  .input-group { width: 21rem; }
   .btn-lg{padding: 0.5rem 1rem; }
   .subject_tb { font-size: 0.5rem; }
 }
