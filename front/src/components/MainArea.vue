@@ -231,8 +231,8 @@
 
 
 <script>
-import topArea from './TopArea.vue'
-import footerArea from './FooterArea.vue'
+import topArea from './TopArea.vue';
+import footerArea from './FooterArea.vue';
 import { Buffer } from 'buffer';
 
 export default {

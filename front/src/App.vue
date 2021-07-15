@@ -6,7 +6,6 @@
 
 
 <script>
-const GoogleFontsPlugin = require("google-fonts-webpack-plugin")
 export default {
   name: 'App'
 }
